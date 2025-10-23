@@ -1,0 +1,129 @@
+@model AE4_DWES_CarlosdeAldaGarcia.Models.Actor
+
+@{
+    ViewData["Title"] = $"{Model.Nombre} {Model.Apellidos}";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Inicio</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Actores" asp-action="Index">Actores</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.Nombre @Model.Apellidos</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow-lg">
+            <div class="card-body text-center">
+                <i class="bi bi-person-circle display-1 text-danger"></i>
+                <h3 class="mt-3">@Model.Nombre @Model.Apellidos</h3>
+                <p class="text-muted">Actor/Actriz</p>
+            </div>
+        </div>
+
+        <div class="card mt-3 shadow-sm">
+            <div class="card-body">
+                <h5><i class="bi bi-info-circle text-danger"></i> Información Personal</h5>
+                <hr>
+                <dl>
+                    <dt>Fecha de Nacimiento:</dt>
+                    <dd>@Model.FechaNacimiento.ToString("dd/MM/yyyy")</dd>
+                    
+                    <dt>Edad:</dt>
+                    <dd>@((DateTime.Now.Year - Model.FechaNacimiento.Year)) años</dd>
+
+                    <dt>Nacionalidad:</dt>
+                    <dd><i class="bi bi-flag"></i> @Model.Nacionalidad</dd>
+
+                    <dt>Producciones:</dt>
+                    <dd>@Model.ContenidoActores.Count</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <h1>@Model.Nombre @Model.Apellidos</h1>
+        
+        @if (!string.IsNullOrEmpty(Model.Biografia))
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5><i class="bi bi-file-text text-danger"></i> Biografía</h5>
+                    <hr>
+                    <p>@Model.Biografia</p>
+                </div>
+            </div>
+        }
+
+        @if (Model.ContenidoActores.Any())
+        {
+            <div class="card">
+                <div class="card-body">
+                    <h5><i class="bi bi-film text-danger"></i> Filmografía (@Model.ContenidoActores.Count)</h5>
+                    <hr>
+                    
+                    <div class="row row-cols-1 row-cols-md-2 g-3">
+                        @foreach (var ca in Model.ContenidoActores.OrderByDescending(ca => ca.Contenido.Anio))
+                        {
+                            <div class="col">
+                                <div class="card h-100">
+                                    <div class="card-header bg-dark text-white d-flex justify-content-between">
+                                        <span>
+                                            @if (ca.Contenido.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula)
+                                            {
+                                                <i class="bi bi-camera-reels"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="bi bi-tv"></i>
+                                            }
+                                            @ca.Contenido.Tipo
+                                        </span>
+                                        <span class="badge bg-danger">@ca.Contenido.Anio</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <h6 class="card-title">@ca.Contenido.Titulo</h6>
+                                        <p class="card-text">
+                                            <small class="text-muted">
+                                                <strong>Papel:</strong> @ca.Papel
+                                                @if (ca.EsProtagonista)
+                                                {
+                                                    <span class="badge bg-warning text-dark">Protagonista</span>
+                                                }
+                                            </small>
+                                        </p>
+                                        <p class="card-text">
+                                            <small class="text-muted">
+                                                <i class="bi bi-tag"></i> @ca.Contenido.Genero.Nombre
+                                            </small>
+                                        </p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a asp-controller="Contenidos" asp-action="Details" asp-route-id="@ca.ContenidoId" 
+                                           class="btn btn-sm btn-outline-danger w-100">
+                                            <i class="bi bi-info-circle"></i> Ver Detalles
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info" role="alert">
+                <i class="bi bi-info-circle"></i> Este actor aún no tiene producciones registradas.
+            </div>
+        }
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Volver a actores
+    </a>
+</div>

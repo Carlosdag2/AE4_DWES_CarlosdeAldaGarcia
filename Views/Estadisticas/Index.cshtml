@@ -1,0 +1,438 @@
+@model AE4_DWES_CarlosdeAldaGarcia.Controllers.EstadisticasViewModel
+
+@{
+    ViewData["Title"] = "Estadísticas";
+}
+
+<style>
+    .dashboard-header {
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.15), rgba(255, 64, 87, 0.15));
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(229, 9, 20, 0.3);
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, rgba(31, 31, 31, 0.95), rgba(41, 41, 41, 0.95));
+        border: 2px solid transparent;
+        border-radius: 15px;
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.1), rgba(255, 64, 87, 0.1));
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-10px) scale(1.05);
+        border-color: var(--primary-color);
+        box-shadow: 0 15px 40px rgba(229, 9, 20, 0.4);
+    }
+
+    .stat-card:hover::before {
+        opacity: 1;
+    }
+
+    .stat-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+        background: linear-gradient(45deg, #fff, #e50914);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--text-muted);
+        position: relative;
+        z-index: 1;
+    }
+
+    .rating-showcase {
+        background: linear-gradient(135deg, #ffd700, #ffed4e);
+        color: #000;
+        border-radius: 20px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+    }
+
+    .section-card {
+        background: rgba(31, 31, 31, 0.9);
+        border: 1px solid rgba(229, 9, 20, 0.2);
+        border-radius: 15px;
+        padding: 0;
+        overflow: hidden;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .section-card-header {
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.9), rgba(178, 7, 16, 0.9));
+        padding: 1.25rem 1.5rem;
+        border-bottom: 2px solid rgba(229, 9, 20, 0.5);
+    }
+
+    .section-card-body {
+        padding: 1.5rem;
+    }
+
+    .top-item {
+        background: rgba(41, 41, 41, 0.6);
+        border: 1px solid rgba(229, 9, 20, 0.2);
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: block;
+        color: inherit;
+    }
+
+    .top-item:hover {
+        background: rgba(229, 9, 20, 0.1);
+        border-color: rgba(229, 9, 20, 0.5);
+        transform: translateX(10px);
+        color: inherit;
+    }
+
+    .progress {
+        height: 30px;
+        border-radius: 15px;
+        background: rgba(31, 31, 31, 0.8);
+        border: 1px solid rgba(229, 9, 20, 0.2);
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        background: linear-gradient(90deg, #e50914, #ff4057);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        box-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+        animation: progressAnimation 1s ease-out;
+    }
+
+    @@keyframes progressAnimation {
+        from { width: 0 !important; }
+    }
+
+    .rank-badge {
+        background: linear-gradient(135deg, #e50914, #ff4057);
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        margin-right: 1rem;
+        box-shadow: 0 5px 15px rgba(229, 9, 20, 0.4);
+    }
+
+    .rank-badge.gold {
+        background: linear-gradient(135deg, #ffd700, #ffed4e);
+        color: #000;
+    }
+
+    .rank-badge.silver {
+        background: linear-gradient(135deg, #c0c0c0, #e8e8e8);
+        color: #000;
+    }
+
+    .rank-badge.bronze {
+        background: linear-gradient(135deg, #cd7f32, #e6a047);
+        color: #fff;
+    }
+</style>
+
+<div class="dashboard-header">
+    <h1 class="display-4 fw-bold mb-2">
+        <i class="bi bi-bar-chart-fill text-danger"></i> Dashboard de Estadísticas
+    </h1>
+    <p class="lead mb-0">Análisis completo y métricas de la plataforma StreamFlix</p>
+</div>
+
+<!-- Estadísticas principales -->
+<div class="row g-4 mb-4">
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="stat-card">
+            <i class="bi bi-collection-play-fill stat-icon text-danger"></i>
+            <div class="stat-number">@Model.TotalContenidos</div>
+            <div class="stat-label">Total Contenidos</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="stat-card">
+            <i class="bi bi-camera-reels-fill stat-icon text-primary"></i>
+            <div class="stat-number">@Model.TotalPeliculas</div>
+            <div class="stat-label">Películas</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="stat-card">
+            <i class="bi bi-tv-fill stat-icon text-success"></i>
+            <div class="stat-number">@Model.TotalSeries</div>
+            <div class="stat-label">Series</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="stat-card">
+            <i class="bi bi-people-fill stat-icon text-info"></i>
+            <div class="stat-number">@Model.TotalActores</div>
+            <div class="stat-label">Actores</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="stat-card">
+            <i class="bi bi-tags-fill stat-icon text-warning"></i>
+            <div class="stat-number">@Model.TotalGeneros</div>
+            <div class="stat-label">Géneros</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="stat-card">
+            <i class="bi bi-star-fill stat-icon text-warning"></i>
+            <div class="stat-number">@Model.TotalValoraciones</div>
+            <div class="stat-label">Valoraciones</div>
+        </div>
+    </div>
+</div>
+
+@if (Model.PromedioValoracionGeneral > 0)
+{
+    <div class="rating-showcase mb-4">
+        <h2 class="mb-3">
+            <i class="bi bi-trophy-fill"></i> Valoración Media de la Plataforma
+        </h2>
+        <div class="display-1 fw-bold mb-2">
+            @Model.PromedioValoracionGeneral.ToString("F2") <i class="bi bi-star-fill"></i>
+        </div>
+        <p class="fs-5 mb-0">sobre 5.0 estrellas</p>
+    </div>
+}
+
+<div class="row g-4 mb-4">
+    <!-- Top 5 Mejor Valorados -->
+    <div class="col-lg-6">
+        <div class="section-card">
+            <div class="section-card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-trophy-fill"></i> Top 5 - Mejor Valorados
+                </h5>
+            </div>
+            <div class="section-card-body">
+                @if (Model.ContenidosMejorValorados.Any())
+                {
+                    @for (int i = 0; i < Model.ContenidosMejorValorados.Count(); i++)
+                    {
+                        var contenido = Model.ContenidosMejorValorados.ElementAt(i);
+                        var promedio = contenido.Valoraciones.Average(v => v.Puntuacion);
+                        var badgeClass = i == 0 ? "gold" : (i == 1 ? "silver" : (i == 2 ? "bronze" : ""));
+                        
+                        <a asp-controller="Contenidos" asp-action="Details" asp-route-id="@contenido.Id" class="top-item">
+                            <div class="d-flex align-items-center">
+                                <span class="rank-badge @badgeClass">@(i + 1)</span>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1 fw-bold">@contenido.Titulo</h6>
+                                    <small class="text-muted">
+                                        <i class="bi bi-tag"></i> @contenido.Genero.Nombre | 
+                                        <i class="bi bi-calendar"></i> @contenido.Anio
+                                    </small>
+                                </div>
+                                <div class="text-end">
+                                    <span class="text-warning fs-5">
+                                        <i class="bi bi-star-fill"></i> @promedio.ToString("F1")
+                                    </span>
+                                    <br/>
+                                    <small class="text-muted">@contenido.Valoraciones.Count reviews</small>
+                                </div>
+                            </div>
+                        </a>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Géneros Más Populares -->
+    <div class="col-lg-6">
+        <div class="section-card">
+            <div class="section-card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-tags-fill"></i> Géneros Más Populares
+                </h5>
+            </div>
+            <div class="section-card-body">
+                @if (Model.GenerosPopulares.Any())
+                {
+                    @for (int i = 0; i < Model.GenerosPopulares.Count(); i++)
+                    {
+                        var genero = Model.GenerosPopulares.ElementAt(i);
+                        var badgeClass = i == 0 ? "gold" : (i == 1 ? "silver" : (i == 2 ? "bronze" : ""));
+                        
+                        <a asp-controller="Generos" asp-action="Details" asp-route-id="@genero.Id" class="top-item">
+                            <div class="d-flex align-items-center">
+                                <span class="rank-badge @badgeClass">@(i + 1)</span>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1 fw-bold">@genero.Nombre</h6>
+                                    <small class="text-muted">@genero.Descripcion.Substring(0, Math.Min(50, genero.Descripcion.Length))...</small>
+                                </div>
+                                <span class="badge bg-danger fs-6">
+                                    @genero.Contenidos.Count contenidos
+                                </span>
+                            </div>
+                        </a>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <!-- Actores Destacados -->
+    <div class="col-lg-6">
+        <div class="section-card">
+            <div class="section-card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-people-fill"></i> Actores Más Destacados
+                </h5>
+            </div>
+            <div class="section-card-body">
+                @if (Model.ActoresDestacados.Any())
+                {
+                    @for (int i = 0; i < Model.ActoresDestacados.Count(); i++)
+                    {
+                        var actor = Model.ActoresDestacados.ElementAt(i);
+                        var badgeClass = i == 0 ? "gold" : (i == 1 ? "silver" : (i == 2 ? "bronze" : ""));
+                        
+                        <a asp-controller="Actores" asp-action="Details" asp-route-id="@actor.Id" class="top-item">
+                            <div class="d-flex align-items-center">
+                                <span class="rank-badge @badgeClass">@(i + 1)</span>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1 fw-bold">@actor.Nombre @actor.Apellidos</h6>
+                                    <small class="text-muted">
+                                        <i class="bi bi-flag"></i> @actor.Nacionalidad
+                                    </small>
+                                </div>
+                                <span class="badge bg-info fs-6">
+                                    @actor.ContenidoActores.Count producciones
+                                </span>
+                            </div>
+                        </a>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Lanzamientos Recientes -->
+    <div class="col-lg-6">
+        <div class="section-card">
+            <div class="section-card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-clock-history"></i> Lanzamientos Recientes
+                </h5>
+            </div>
+            <div class="section-card-body">
+                @if (Model.ContenidosRecientes.Any())
+                {
+                    @foreach (var contenido in Model.ContenidosRecientes)
+                    {
+                        <a asp-controller="Contenidos" asp-action="Details" asp-route-id="@contenido.Id" class="top-item">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-@(contenido.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula ? "camera-reels" : "tv")-fill text-danger fs-3 me-3"></i>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1 fw-bold">@contenido.Titulo</h6>
+                                    <small class="text-muted">
+                                        @contenido.Tipo | @contenido.Genero.Nombre | @contenido.Anio
+                                    </small>
+                                </div>
+                                <small class="text-muted">
+                                    @contenido.FechaEstreno.ToString("dd MMM yyyy")
+                                </small>
+                            </div>
+                        </a>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.DistribucionPorAnio.Any())
+{
+    <div class="section-card">
+        <div class="section-card-header">
+            <h5 class="mb-0">
+                <i class="bi bi-graph-up-arrow"></i> Distribución de Contenidos por Año
+            </h5>
+        </div>
+        <div class="section-card-body">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th style="width: 100px;">Año</th>
+                            <th style="width: 120px;">Cantidad</th>
+                            <th>Gráfico</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var maxCantidad = Model.DistribucionPorAnio.Values.Max();
+                        }
+                        @foreach (var item in Model.DistribucionPorAnio.OrderByDescending(x => x.Key))
+                        {
+                            var porcentaje = (item.Value * 100.0) / maxCantidad;
+                            <tr>
+                                <td><strong class="fs-5">@item.Key</strong></td>
+                                <td><span class="badge bg-danger fs-6">@item.Value</span></td>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" 
+                                             style="width: @porcentaje%" 
+                                             aria-valuenow="@item.Value" 
+                                             aria-valuemin="0" 
+                                             aria-valuemax="@maxCantidad">
+                                            @item.Value contenidos
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

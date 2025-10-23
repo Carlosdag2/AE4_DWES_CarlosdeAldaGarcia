@@ -1,0 +1,411 @@
+/* StreamFlix - Professional Streaming Platform Styles */
+
+/* === GLOBAL VARIABLES === */
+:root {
+    --primary-color: #e50914;
+    --primary-dark: #b20710;
+    --primary-light: #ff4057;
+    --secondary-color: #221f1f;
+    --background-dark: #141414;
+    --background-darker: #0a0a0a;
+    --card-bg: #1f1f1f;
+    --card-hover: #2f2f2f;
+    --text-light: #ffffff;
+    --text-muted: #b3b3b3;
+    --text-dark: #000000;
+    --success: #28a745;
+    --warning: #ffc107;
+    --danger: #e50914;
+    --info: #17a2b8;
+    --gold: #ffd700;
+    --silver: #c0c0c0;
+    --bronze: #cd7f32;
+}
+
+/* === RESPONSIVE TYPOGRAPHY === */
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+/* === BODY STYLES === */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    background-attachment: fixed;
+    color: var(--text-light);
+    min-height: 100vh;
+}
+
+/* === FOCUS STATES === */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus,
+.form-select:focus {
+    box-shadow: 0 0 0 0.2rem rgba(229, 9, 20, 0.5) !important;
+    outline: none;
+}
+
+/* === FORM CONTROLS === */
+.form-control,
+.form-select {
+    background: rgba(31, 31, 31, 0.8);
+    border: 1px solid rgba(229, 9, 20, 0.3);
+    color: var(--text-light);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background: rgba(31, 31, 31, 0.95);
+    border-color: var(--primary-color);
+    color: var(--text-light);
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
+.form-select option {
+    background: var(--card-bg);
+    color: var(--text-light);
+}
+
+/* === BUTTONS === */
+.btn {
+    border-radius: 25px;
+    padding: 0.6rem 1.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    border-width: 2px;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    border-color: var(--primary-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-danger::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: all 0.5s ease;
+}
+
+.btn-danger:hover::before {
+    left: 100%;
+}
+
+.btn-danger:hover,
+.btn-outline-danger:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(229, 9, 20, 0.5);
+}
+
+.btn-outline-danger {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-outline-danger:hover {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    border-color: var(--primary-color);
+    color: white;
+}
+
+/* === CARDS === */
+.card {
+    background: rgba(31, 31, 31, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(229, 9, 20, 0.2);
+    border-radius: 15px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+}
+
+.card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(229, 9, 20, 0.4);
+    border-color: rgba(229, 9, 20, 0.6);
+}
+
+.card-header {
+    background: linear-gradient(135deg, rgba(229, 9, 20, 0.9), rgba(178, 7, 16, 0.9));
+    border: none;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-footer {
+    background: rgba(20, 20, 20, 0.5);
+    border-top: 1px solid rgba(229, 9, 20, 0.2);
+}
+
+/* === BADGES === */
+.badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+/* === TABLES === */
+.table {
+    color: var(--text-light);
+}
+
+.table thead th {
+    border-bottom: 2px solid rgba(229, 9, 20, 0.3);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    letter-spacing: 0.5px;
+}
+
+.table tbody tr {
+    border-bottom: 1px solid rgba(229, 9, 20, 0.1);
+    transition: all 0.3s ease;
+}
+
+.table-hover tbody tr:hover {
+    background: rgba(229, 9, 20, 0.1);
+    transform: translateX(5px);
+}
+
+/* === BREADCRUMBS === */
+.breadcrumb {
+    background: transparent;
+    padding: 0;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: var(--primary-color);
+}
+
+.breadcrumb-item a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.breadcrumb-item a:hover {
+    color: var(--primary-color);
+}
+
+.breadcrumb-item.active {
+    color: var(--text-light);
+}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--primary-color), var(--primary-light));
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--primary-light), var(--primary-color));
+}
+
+/* === ALERTS === */
+.alert {
+    border-radius: 15px;
+    border: none;
+    padding: 1rem 1.5rem;
+}
+
+.alert-info {
+    background: rgba(23, 162, 184, 0.2);
+    color: #17a2b8;
+    border: 1px solid rgba(23, 162, 184, 0.3);
+}
+
+.alert-warning {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.alert-danger {
+    background: rgba(229, 9, 20, 0.2);
+    color: #ff4057;
+    border: 1px solid rgba(229, 9, 20, 0.3);
+}
+
+.alert-success {
+    background: rgba(40, 167, 69, 0.2);
+    color: #28a745;
+    border: 1px solid rgba(40, 167, 69, 0.3);
+}
+
+/* === LINKS === */
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: var(--primary-light);
+}
+
+/* === TEXT UTILITIES === */
+.text-warning {
+    color: #ffd700 !important;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* === ANIMATIONS === */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* === INPUT GROUP === */
+.input-group-text {
+    background: rgba(31, 31, 31, 0.8);
+    border: 1px solid rgba(229, 9, 20, 0.3);
+    color: var(--text-light);
+}
+
+/* === PROGRESS BARS === */
+.progress {
+    background: rgba(31, 31, 31, 0.8);
+    border: 1px solid rgba(229, 9, 20, 0.2);
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+}
+
+/* === RESPONSIVE UTILITIES === */
+@media (max-width: 767px) {
+    .container-fluid {
+        padding: 1rem;
+    }
+
+    .display-1 {
+        font-size: 3rem;
+    }
+
+    .display-3 {
+        font-size: 2.5rem;
+    }
+
+    .display-4 {
+        font-size: 2rem;
+    }
+
+    .display-5 {
+        font-size: 1.75rem;
+    }
+}
+
+/* === MODAL === */
+.modal-content {
+    background: linear-gradient(135deg, rgba(31, 31, 31, 0.98), rgba(41, 41, 41, 0.98));
+    border: 1px solid rgba(229, 9, 20, 0.3);
+    border-radius: 15px;
+    color: var(--text-light);
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(229, 9, 20, 0.2);
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(229, 9, 20, 0.2);
+}
+
+/* === ACCESSIBILITY === */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* === PRINT STYLES === */
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+
+    .navbar,
+    .footer,
+    .btn {
+        display: none;
+    }
+}

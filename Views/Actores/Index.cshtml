@@ -1,0 +1,190 @@
+@model IEnumerable<AE4_DWES_CarlosdeAldaGarcia.Models.Actor>
+
+@{
+    ViewData["Title"] = "Actores";
+}
+
+<style>
+    .page-header {
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.1), rgba(255, 64, 87, 0.1));
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(229, 9, 20, 0.3);
+    }
+
+    .search-container {
+        background: rgba(31, 31, 31, 0.6);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(229, 9, 20, 0.2);
+    }
+
+    .actor-card {
+        background: linear-gradient(135deg, rgba(31, 31, 31, 0.9), rgba(41, 41, 41, 0.9));
+        border: 1px solid rgba(229, 9, 20, 0.2);
+        border-radius: 15px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        overflow: hidden;
+        height: 100%;
+    }
+
+    .actor-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 15px 40px rgba(229, 9, 20, 0.4);
+        border-color: rgba(229, 9, 20, 0.6);
+    }
+
+    .actor-avatar {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 1rem;
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.3), rgba(255, 64, 87, 0.3));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        color: rgba(255, 255, 255, 0.8);
+        transition: all 0.3s ease;
+    }
+
+    .actor-card:hover .actor-avatar {
+        transform: scale(1.1) rotate(5deg);
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.5), rgba(255, 64, 87, 0.5));
+    }
+
+    .actor-name {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(45deg, #fff, #e50914);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .actor-info {
+        background: rgba(20, 20, 20, 0.5);
+        padding: 1rem;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+    }
+
+    .production-badge {
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.2), rgba(255, 64, 87, 0.2));
+        border: 1px solid rgba(229, 9, 20, 0.4);
+        padding: 0.5rem 1rem;
+        border-radius: 15px;
+        display: inline-block;
+        font-weight: 600;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: rgba(31, 31, 31, 0.6);
+        border-radius: 20px;
+        border: 1px solid rgba(229, 9, 20, 0.2);
+    }
+
+    .empty-state-icon {
+        font-size: 5rem;
+        color: var(--text-muted);
+        margin-bottom: 1.5rem;
+    }
+</style>
+
+<div class="page-header">
+    <h1 class="display-5 fw-bold mb-2">
+        <i class="bi bi-people-fill text-danger"></i> Directorio de Actores
+    </h1>
+    <p class="lead mb-0">Descubre las estrellas de cine y sus filmografías</p>
+</div>
+
+<div class="search-container">
+    <form asp-action="Index" method="get">
+        <div class="input-group">
+            <span class="input-group-text bg-transparent border-danger text-danger">
+                <i class="bi bi-search"></i>
+            </span>
+            <input type="text" name="buscar" class="form-control border-danger" 
+                   placeholder="Buscar por nombre, apellidos o nacionalidad..." 
+                   value="@ViewBag.Buscar"
+                   style="border-left: none;">
+            <button class="btn btn-danger" type="submit">
+                <i class="bi bi-funnel-fill"></i> Buscar
+            </button>
+        </div>
+    </form>
+</div>
+
+@if (Model.Any())
+{
+    <div class="mb-3">
+        <span class="badge bg-danger fs-6">
+            <i class="bi bi-people"></i> @Model.Count() actores encontrados
+        </span>
+    </div>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card actor-card shadow-lg">
+                    <div class="card-body text-center">
+                        <div class="actor-avatar">
+                            <i class="bi bi-person-circle"></i>
+                        </div>
+                        <h5 class="actor-name">@item.Nombre @item.Apellidos</h5>
+                        
+                        <div class="actor-info">
+                            <p class="mb-2 text-muted">
+                                <i class="bi bi-flag-fill text-info"></i> 
+                                <strong>@item.Nacionalidad</strong>
+                            </p>
+                            <p class="mb-0 text-muted small">
+                                <i class="bi bi-calendar-event"></i> 
+                                @item.FechaNacimiento.ToString("dd/MM/yyyy")
+                            </p>
+                        </div>
+
+                        <div class="production-badge">
+                            <i class="bi bi-film"></i> 
+                            <strong>@item.ContenidoActores.Count</strong> 
+                            @(item.ContenidoActores.Count == 1 ? "producción" : "producciones")
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-top border-danger">
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-danger w-100">
+                            <i class="bi bi-info-circle-fill"></i> Ver Filmografía
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="empty-state">
+        <div class="empty-state-icon">
+            <i class="bi bi-search"></i>
+        </div>
+        <h3 class="text-muted mb-3">No se encontraron actores</h3>
+        <p class="text-muted mb-4">
+            @if (!string.IsNullOrEmpty(ViewBag.Buscar as string))
+            {
+                <span>Tu búsqueda <strong>"@ViewBag.Buscar"</strong> no dio resultados.</span>
+            }
+            else
+            {
+                <span>No hay actores registrados en la base de datos.</span>
+            }
+        </p>
+        <a asp-action="Index" class="btn btn-outline-danger">
+            <i class="bi bi-arrow-clockwise"></i> Limpiar Búsqueda
+        </a>
+    </div>
+}

@@ -1,0 +1,221 @@
+﻿@model IEnumerable<AE4_DWES_CarlosdeAldaGarcia.Models.Contenido>
+
+@{
+    ViewData["Title"] = "Catálogo de Contenidos";
+}
+
+<style>
+    .filter-section {
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.1), rgba(255, 64, 87, 0.1));
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(229, 9, 20, 0.3);
+    }
+
+    .search-box {
+        position: relative;
+    }
+
+    .search-box input {
+        padding-left: 3rem;
+    }
+
+    .search-box i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        font-size: 1.2rem;
+    }
+
+    .content-grid-card {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        height: 100%;
+    }
+
+    .content-grid-card:hover {
+        transform: translateY(-10px) scale(1.02);
+    }
+
+    .poster-placeholder {
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.3), rgba(255, 64, 87, 0.3));
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        color: rgba(255, 255, 255, 0.3);
+        border-bottom: 1px solid rgba(229, 9, 20, 0.2);
+    }
+
+    .genre-badge {
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.8), rgba(178, 7, 16, 0.8));
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .year-badge {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(229, 9, 20, 0.4);
+        padding: 0.3rem 0.8rem;
+        border-radius: 15px;
+        font-weight: 600;
+    }
+</style>
+
+<div class="mb-4">
+    <h1 class="display-5 fw-bold mb-2">
+        <i class="bi bi-collection-play-fill text-danger"></i> Catálogo de Contenidos
+    </h1>
+    <p class="text-muted">Explora nuestra biblioteca completa de películas y series</p>
+</div>
+
+<!-- Sección de filtros -->
+<div class="filter-section">
+    <form asp-action="Index" method="get" class="row g-3">
+        <div class="col-md-4">
+            <label for="tipo" class="form-label fw-bold">
+                <i class="bi bi-funnel-fill text-danger"></i> Tipo de Contenido
+            </label>
+            <select name="tipo" class="form-select" id="tipo">
+                <option value="">🎬 Todos</option>
+                <option value="Pelicula" selected="@(ViewBag.TipoSeleccionado == "Pelicula")">
+                    Películas
+                </option>
+                <option value="Serie" selected="@(ViewBag.TipoSeleccionado == "Serie")">
+                    Series
+                </option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="generoId" class="form-label fw-bold">
+                <i class="bi bi-tags-fill text-danger"></i> Género
+            </label>
+            <select name="generoId" class="form-select" id="generoId">
+                <option value="">🎭 Todos los géneros</option>
+                @foreach (var genero in ViewBag.Generos as List<AE4_DWES_CarlosdeAldaGarcia.Models.Genero>)
+                {
+                    <option value="@genero.Id" selected="@(ViewBag.GeneroSeleccionado == genero.Id)">
+                        @genero.Nombre
+                    </option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="submit" class="btn btn-danger w-100">
+                <i class="bi bi-search"></i> Aplicar Filtros
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Búsqueda -->
+<div class="mb-4">
+    <form asp-controller="Contenidos" asp-action="Buscar" method="get">
+        <div class="search-box">
+            <i class="bi bi-search"></i>
+            <input type="text" name="termino" class="form-control form-control-lg" 
+                   placeholder="Buscar por título, director o descripción..." 
+                   style="border-radius: 25px;">
+        </div>
+    </form>
+</div>
+
+<!-- Grid de contenidos -->
+@if (Model.Any())
+{
+    <div class="mb-3">
+        <span class="badge bg-danger fs-6">
+            <i class="bi bi-collection"></i> @Model.Count() resultados encontrados
+        </span>
+    </div>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card content-grid-card shadow-lg h-100">
+                    <!-- Poster placeholder -->
+                    <div class="poster-placeholder">
+                        @if (item.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula)
+                        {
+                            <i class="bi bi-camera-reels-fill"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-tv-fill"></i>
+                        }
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="genre-badge">@item.Genero.Nombre</span>
+                            <span class="year-badge">@item.Anio</span>
+                        </div>
+
+                        <h5 class="card-title fw-bold mb-2" style="line-height: 1.3;">
+                            @item.Titulo
+                        </h5>
+                        
+                        <p class="text-muted small mb-2">
+                            <i class="bi bi-person-fill text-info"></i> @item.Director
+                        </p>
+
+                        <p class="card-text small mb-3" style="line-height: 1.5; color: var(--text-muted);">
+                            @item.Descripcion.Substring(0, Math.Min(100, item.Descripcion.Length))...
+                        </p>
+                        
+                        @if (item.Valoraciones.Any())
+                        {
+                            var promedio = item.Valoraciones.Average(v => v.Puntuacion);
+                            <div class="d-flex align-items-center gap-2 mb-3">
+                                <span class="text-warning">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= promedio)
+                                        {
+                                            <i class="bi bi-star-fill"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-star"></i>
+                                        }
+                                    }
+                                </span>
+                                <small class="text-muted">
+                                    <strong>@promedio.ToString("F1")</strong>
+                                    (@item.Valoraciones.Count)
+                                </small>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="card-footer">
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-danger w-100">
+                            <i class="bi bi-play-circle-fill"></i> Ver Detalles
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="text-center py-5">
+        <div class="mb-4">
+            <i class="bi bi-search" style="font-size: 5rem; color: var(--text-muted);"></i>
+        </div>
+        <h3 class="text-muted">No se encontraron contenidos</h3>
+        <p class="text-muted">Intenta ajustar los filtros o realizar una búsqueda diferente</p>
+        <a asp-action="Index" class="btn btn-outline-danger mt-3">
+            <i class="bi bi-arrow-clockwise"></i> Limpiar Filtros
+        </a>
+    </div>
+}

@@ -1,0 +1,162 @@
+@model IEnumerable<AE4_DWES_CarlosdeAldaGarcia.Models.Genero>
+
+@{
+    ViewData["Title"] = "Géneros";
+}
+
+<style>
+    .genres-header {
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.1), rgba(255, 64, 87, 0.1));
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(229, 9, 20, 0.3);
+    }
+
+    .genre-card {
+        background: linear-gradient(135deg, rgba(31, 31, 31, 0.9), rgba(41, 41, 41, 0.9));
+        border: 1px solid rgba(229, 9, 20, 0.2);
+        border-radius: 15px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        overflow: hidden;
+        height: 100%;
+        position: relative;
+    }
+
+    .genre-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.05), rgba(255, 64, 87, 0.05));
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+
+    .genre-card:hover {
+        transform: translateY(-15px) scale(1.03);
+        box-shadow: 0 20px 50px rgba(229, 9, 20, 0.5);
+        border-color: rgba(229, 9, 20, 0.8);
+    }
+
+    .genre-card:hover::before {
+        opacity: 1;
+    }
+
+    .genre-icon-container {
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.2), rgba(255, 64, 87, 0.2));
+        padding: 2rem;
+        border-radius: 15px 15px 0 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .genre-icon-container::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        animation: pulse 4s ease-in-out infinite;
+    }
+
+    .genre-icon {
+        font-size: 4rem;
+        color: #e50914;
+        position: relative;
+        z-index: 1;
+        transition: all 0.3s ease;
+    }
+
+    .genre-card:hover .genre-icon {
+        transform: scale(1.2) rotate(10deg);
+        filter: drop-shadow(0 0 20px rgba(229, 9, 20, 0.8));
+    }
+
+    .genre-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        background: linear-gradient(45deg, #fff, #e50914);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    .genre-description {
+        color: var(--text-muted);
+        line-height: 1.6;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .content-count {
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.2), rgba(255, 64, 87, 0.2));
+        border: 1px solid rgba(229, 9, 20, 0.4);
+        padding: 0.75rem 1.5rem;
+        border-radius: 20px;
+        display: inline-block;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .genre-card-body {
+        padding: 1.5rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .genre-card-footer {
+        padding: 1rem 1.5rem;
+        background: rgba(20, 20, 20, 0.5);
+        border-top: 1px solid rgba(229, 9, 20, 0.2);
+    }
+</style>
+
+<div class="genres-header">
+    <h1 class="display-5 fw-bold mb-2">
+        <i class="bi bi-tags-fill text-danger"></i> Explorar por Género
+    </h1>
+    <p class="lead mb-0">Encuentra el contenido perfecto para tu estado de ánimo</p>
+</div>
+
+<div class="mb-3">
+    <span class="badge bg-danger fs-6">
+        <i class="bi bi-grid-3x3"></i> @Model.Count() géneros disponibles
+    </span>
+</div>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card genre-card shadow-lg">
+                <div class="genre-icon-container">
+                    <i class="bi bi-tag-fill genre-icon"></i>
+                </div>
+                <div class="genre-card-body">
+                    <h4 class="genre-title">@item.Nombre</h4>
+                    <p class="genre-description">@item.Descripcion</p>
+                    <div class="text-center">
+                        <span class="content-count">
+                            <i class="bi bi-film"></i> 
+                            <strong>@item.Contenidos.Count</strong> 
+                            @(item.Contenidos.Count == 1 ? "contenido" : "contenidos")
+                        </span>
+                    </div>
+                </div>
+                <div class="genre-card-footer">
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-danger w-100">
+                        <i class="bi bi-play-circle-fill"></i> Explorar Género
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

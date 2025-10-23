@@ -1,0 +1,237 @@
+﻿@model IEnumerable<AE4_DWES_CarlosdeAldaGarcia.Models.Contenido>
+
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.1), rgba(255, 64, 87, 0.1));
+        border-radius: 20px;
+        padding: 3rem 2rem;
+        margin-bottom: 3rem;
+        border: 1px solid rgba(229, 9, 20, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(229, 9, 20, 0.1) 0%, transparent 70%);
+        animation: pulse 4s ease-in-out infinite;
+    }
+
+    @@keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 0.5; }
+        50% { transform: scale(1.1); opacity: 0.8; }
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        background: linear-gradient(45deg, #fff, #e50914);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        display: inline-block;
+    }
+
+    .content-card {
+        height: 100%;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .content-card:hover {
+        transform: translateY(-15px) scale(1.03);
+    }
+
+    .feature-card {
+        text-align: center;
+        padding: 2rem;
+        height: 100%;
+    }
+
+    .feature-icon {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        display: inline-block;
+        background: linear-gradient(135deg, #e50914, #ff4057);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @@keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .stats-badge {
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.2), rgba(255, 64, 87, 0.2));
+        border: 1px solid rgba(229, 9, 20, 0.4);
+        padding: 0.5rem 1rem;
+        border-radius: 15px;
+        display: inline-block;
+        margin: 0.3rem;
+    }
+</style>
+
+<div class="hero-section">
+    <div class="hero-content">
+        <h1 class="display-3 fw-bold mb-3">
+            <i class="bi bi-film text-danger"></i> Bienvenido a StreamFlix
+        </h1>
+        <p class="lead fs-4 mb-4">
+            Descubre un universo de entretenimiento. Miles de películas, series y contenido exclusivo te esperan.
+        </p>
+        <div class="mb-4">
+            <span class="stats-badge">
+                <i class="bi bi-collection-play-fill text-danger"></i> Catálogo Premium
+            </span>
+            <span class="stats-badge">
+                <i class="bi bi-star-fill text-warning"></i> Mejor Valorado
+            </span>
+            <span class="stats-badge">
+                <i class="bi bi-clock-fill text-info"></i> Actualizado Diariamente
+            </span>
+        </div>
+        <div class="d-flex gap-3 flex-wrap">
+            <a class="btn btn-danger btn-lg" asp-controller="Contenidos" asp-action="Index">
+                <i class="bi bi-play-circle-fill"></i> Explorar Catálogo
+            </a>
+            <a class="btn btn-outline-danger btn-lg" asp-controller="Estadisticas" asp-action="Index">
+                <i class="bi bi-graph-up"></i> Ver Estadísticas
+            </a>
+        </div>
+    </div>
+</div>
+
+<h2 class="section-title mb-4">
+    <i class="bi bi-star-fill text-warning"></i> Contenidos Destacados
+</h2>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card content-card h-100 shadow-lg">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>
+                        @if (item.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula)
+                        {
+                            <i class="bi bi-camera-reels-fill"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-tv-fill"></i>
+                        }
+                        <strong>@item.Tipo</strong>
+                    </span>
+                    <span class="badge bg-danger">@item.Anio</span>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title fw-bold mb-3">@item.Titulo</h5>
+                    <p class="text-muted mb-2">
+                        <i class="bi bi-tag-fill text-danger"></i> @item.Genero.Nombre
+                        <br/>
+                        <i class="bi bi-person-fill text-info"></i> @item.Director
+                    </p>
+                    <p class="card-text small" style="line-height: 1.6;">
+                        @item.Descripcion.Substring(0, Math.Min(120, item.Descripcion.Length))...
+                    </p>
+                    
+                    @if (item.Valoraciones.Any())
+                    {
+                        var promedio = item.Valoraciones.Average(v => v.Puntuacion);
+                        <div class="d-flex align-items-center gap-2 mt-3">
+                            <span class="text-warning" style="font-size: 1.2rem;">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= promedio)
+                                    {
+                                        <i class="bi bi-star-fill"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-star"></i>
+                                    }
+                                }
+                            </span>
+                            <small class="text-muted">
+                                <strong>@promedio.ToString("F1")</strong> 
+                                (@item.Valoraciones.Count reviews)
+                            </small>
+                        </div>
+                    }
+                </div>
+                <div class="card-footer">
+                    <a asp-controller="Contenidos" asp-action="Details" asp-route-id="@item.Id" 
+                       class="btn btn-danger w-100">
+                        <i class="bi bi-info-circle-fill"></i> Ver Detalles
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<h2 class="section-title mb-4">
+    <i class="bi bi-compass-fill text-info"></i> Explora por Categorías
+</h2>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col">
+        <div class="card feature-card shadow-lg h-100">
+            <div class="card-body">
+                <i class="bi bi-collection-play-fill feature-icon"></i>
+                <h5 class="card-title fw-bold mt-3 mb-3">Catálogo Completo</h5>
+                <p class="card-text text-muted mb-4">
+                    Explora toda nuestra biblioteca de películas y series. Filtra por género, año o busca tu favorita.
+                </p>
+                <a asp-controller="Contenidos" asp-action="Index" class="btn btn-outline-danger">
+                    <i class="bi bi-arrow-right-circle"></i> Ver Contenidos
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card feature-card shadow-lg h-100">
+            <div class="card-body">
+                <i class="bi bi-people-fill feature-icon"></i>
+                <h5 class="card-title fw-bold mt-3 mb-3">Estrellas del Cine</h5>
+                <p class="card-text text-muted mb-4">
+                    Descubre a los mejores actores y actrices. Consulta su filmografía completa y biografía.
+                </p>
+                <a asp-controller="Actores" asp-action="Index" class="btn btn-outline-danger">
+                    <i class="bi bi-arrow-right-circle"></i> Ver Actores
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card feature-card shadow-lg h-100">
+            <div class="card-body">
+                <i class="bi bi-bar-chart-fill feature-icon"></i>
+                <h5 class="card-title fw-bold mt-3 mb-3">Analytics & Estadísticas</h5>
+                <p class="card-text text-muted mb-4">
+                    Consulta datos fascinantes sobre nuestra plataforma. Rankings, tendencias y mucho más.
+                </p>
+                <a asp-controller="Estadisticas" asp-action="Index" class="btn btn-outline-danger">
+                    <i class="bi bi-arrow-right-circle"></i> Ver Estadísticas
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
