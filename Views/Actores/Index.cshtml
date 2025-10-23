@@ -13,17 +13,17 @@
         border: 1px solid rgba(229, 9, 20, 0.3);
     }
 
-    .search-container {
-        background: rgba(31, 31, 31, 0.6);
+ .search-container {
+    background: rgba(31, 31, 31, 0.6);
         border-radius: 15px;
-        padding: 1.5rem;
-        margin-bottom: 2rem;
+ padding: 1.5rem;
+   margin-bottom: 2rem;
         border: 1px solid rgba(229, 9, 20, 0.2);
     }
 
     .actor-card {
         background: linear-gradient(135deg, rgba(31, 31, 31, 0.9), rgba(41, 41, 41, 0.9));
-        border: 1px solid rgba(229, 9, 20, 0.2);
+  border: 1px solid rgba(229, 9, 20, 0.2);
         border-radius: 15px;
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         overflow: hidden;
@@ -33,66 +33,110 @@
     .actor-card:hover {
         transform: translateY(-10px) scale(1.02);
         box-shadow: 0 15px 40px rgba(229, 9, 20, 0.4);
-        border-color: rgba(229, 9, 20, 0.6);
+     border-color: rgba(229, 9, 20, 0.6);
     }
 
-    .actor-avatar {
-        width: 120px;
-        height: 120px;
-        margin: 0 auto 1rem;
-        background: linear-gradient(135deg, rgba(229, 9, 20, 0.3), rgba(255, 64, 87, 0.3));
-        border-radius: 50%;
+    .actor-photo-container {
+        position: relative;
+        height: 300px;
+        overflow: hidden;
+   background: linear-gradient(135deg, rgba(23, 162, 184, 0.2), rgba(19, 132, 150, 0.2));
+    }
+
+    .actor-photo {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.4s ease;
+    }
+
+    .actor-card:hover .actor-photo {
+    transform: scale(1.1);
+    }
+
+    .actor-photo-placeholder {
+     background: linear-gradient(135deg, rgba(23, 162, 184, 0.3), rgba(19, 132, 150, 0.3));
+        height: 300px;
         display: flex;
         align-items: center;
-        justify-content: center;
-        font-size: 4rem;
-        color: rgba(255, 255, 255, 0.8);
-        transition: all 0.3s ease;
+   justify-content: center;
+        font-size: 5rem;
+   color: rgba(255, 255, 255, 0.3);
     }
 
-    .actor-card:hover .actor-avatar {
-        transform: scale(1.1) rotate(5deg);
-        background: linear-gradient(135deg, rgba(229, 9, 20, 0.5), rgba(255, 64, 87, 0.5));
+    .actor-photo-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+        padding: 1rem;
+        opacity: 0;
+        transition: opacity 0.3s ease;
     }
 
-    .actor-name {
-        font-size: 1.25rem;
+    .actor-card:hover .actor-photo-overlay {
+        opacity: 1;
+    }
+
+  .actor-name {
+  font-size: 1.25rem;
         font-weight: 700;
         margin-bottom: 0.5rem;
-        background: linear-gradient(45deg, #fff, #e50914);
+        background: linear-gradient(45deg, #fff, #17a2b8);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
+        text-align: center;
+      min-height: 2.5rem;
+        display: flex;
+        align-items: center;
+    justify-content: center;
     }
 
     .actor-info {
-        background: rgba(20, 20, 20, 0.5);
-        padding: 1rem;
+   background: rgba(20, 20, 20, 0.5);
+ padding: 1rem;
         border-radius: 10px;
-        margin-bottom: 1rem;
+margin-bottom: 1rem;
     }
 
     .production-badge {
-        background: linear-gradient(135deg, rgba(229, 9, 20, 0.2), rgba(255, 64, 87, 0.2));
-        border: 1px solid rgba(229, 9, 20, 0.4);
-        padding: 0.5rem 1rem;
+ background: linear-gradient(135deg, rgba(23, 162, 184, 0.2), rgba(19, 132, 150, 0.2));
+        border: 1px solid rgba(23, 162, 184, 0.4);
+      padding: 0.5rem 1rem;
         border-radius: 15px;
-        display: inline-block;
-        font-weight: 600;
+     display: inline-block;
+ font-weight: 600;
     }
 
     .empty-state {
-        text-align: center;
-        padding: 4rem 2rem;
+  text-align: center;
+      padding: 4rem 2rem;
         background: rgba(31, 31, 31, 0.6);
         border-radius: 20px;
         border: 1px solid rgba(229, 9, 20, 0.2);
     }
 
     .empty-state-icon {
-        font-size: 5rem;
+  font-size: 5rem;
         color: var(--text-muted);
         margin-bottom: 1.5rem;
+    }
+
+    .nationality-badge {
+        position: absolute;
+     top: 10px;
+        right: 10px;
+        background: rgba(23, 162, 184, 0.95);
+        padding: 0.4rem 0.9rem;
+   border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 15px rgba(23, 162, 184, 0.5);
+        z-index: 10;
     }
 </style>
 
@@ -106,16 +150,16 @@
 <div class="search-container">
     <form asp-action="Index" method="get">
         <div class="input-group">
-            <span class="input-group-text bg-transparent border-danger text-danger">
-                <i class="bi bi-search"></i>
-            </span>
+    <span class="input-group-text bg-transparent border-danger text-danger">
+              <i class="bi bi-search"></i>
+          </span>
             <input type="text" name="buscar" class="form-control border-danger" 
-                   placeholder="Buscar por nombre, apellidos o nacionalidad..." 
-                   value="@ViewBag.Buscar"
-                   style="border-left: none;">
-            <button class="btn btn-danger" type="submit">
-                <i class="bi bi-funnel-fill"></i> Buscar
-            </button>
+                placeholder="Buscar por nombre, apellidos o nacionalidad..." 
+                value="@ViewBag.Buscar"
+       style="border-left: none;">
+          <button class="btn btn-danger" type="submit">
+      <i class="bi bi-funnel-fill"></i> Buscar
+   </button>
         </div>
     </form>
 </div>
@@ -124,67 +168,97 @@
 {
     <div class="mb-3">
         <span class="badge bg-danger fs-6">
-            <i class="bi bi-people"></i> @Model.Count() actores encontrados
-        </span>
+     <i class="bi bi-people"></i> @Model.Count() actores encontrados
+   </span>
     </div>
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         @foreach (var item in Model)
         {
-            <div class="col">
-                <div class="card actor-card shadow-lg">
-                    <div class="card-body text-center">
-                        <div class="actor-avatar">
-                            <i class="bi bi-person-circle"></i>
-                        </div>
-                        <h5 class="actor-name">@item.Nombre @item.Apellidos</h5>
-                        
-                        <div class="actor-info">
-                            <p class="mb-2 text-muted">
-                                <i class="bi bi-flag-fill text-info"></i> 
-                                <strong>@item.Nacionalidad</strong>
-                            </p>
-                            <p class="mb-0 text-muted small">
-                                <i class="bi bi-calendar-event"></i> 
-                                @item.FechaNacimiento.ToString("dd/MM/yyyy")
-                            </p>
-                        </div>
+        <div class="col">
+     <div class="card actor-card shadow-lg">
+     <!-- Foto o placeholder -->
+<div class="actor-photo-container">
+              @if (!string.IsNullOrEmpty(item.Foto))
+     {
+       <img src="@item.Foto" 
+     alt="Foto de @item.Nombre @item.Apellidos" 
+       class="actor-photo"
+    onerror="this.onerror=null; this.src='/images/no-actor-photo.svg';" />
+    }
+    else
+{
+        <div class="actor-photo-placeholder">
+        <i class="bi bi-person-circle"></i>
+     </div>
+ }
+       
+     <!-- Badge de nacionalidad -->
+     <span class="nationality-badge">
+ <i class="bi bi-flag-fill"></i> @item.Nacionalidad
+          </span>
 
-                        <div class="production-badge">
-                            <i class="bi bi-film"></i> 
-                            <strong>@item.ContenidoActores.Count</strong> 
-                            @(item.ContenidoActores.Count == 1 ? "producción" : "producciones")
-                        </div>
-                    </div>
-                    <div class="card-footer bg-transparent border-top border-danger">
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-danger w-100">
-                            <i class="bi bi-info-circle-fill"></i> Ver Filmografía
-                        </a>
-                    </div>
-                </div>
-            </div>
+            <!-- Overlay con edad -->
+ <div class="actor-photo-overlay">
+    <small class="text-white">
+   <i class="bi bi-calendar-event"></i> 
+      @{
+       var edad = DateTime.Now.Year - item.FechaNacimiento.Year;
+ if (DateTime.Now.DayOfYear < item.FechaNacimiento.DayOfYear) edad--;
+   }
+          @edad años
+         </small>
+     </div>
+          </div>
+
+  <div class="card-body text-center">
+ <h5 class="actor-name">@item.Nombre @item.Apellidos</h5>
+     
+    <div class="actor-info">
+ <p class="mb-2 text-muted">
+     <i class="bi bi-calendar-event text-info"></i> 
+   <strong>@item.FechaNacimiento.ToString("dd/MM/yyyy")</strong>
+       </p>
+        <p class="mb-0 text-muted small">
+            <i class="bi bi-cake2"></i> @edad años
+   </p>
+ </div>
+
+        <div class="production-badge">
+     <i class="bi bi-film"></i> 
+    <strong>@item.ContenidoActores.Count</strong> 
+@(item.ContenidoActores.Count == 1 ? "producción" : "producciones")
+       </div>
+        </div>
+      <div class="card-footer bg-transparent border-top border-danger">
+   <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-danger w-100">
+           <i class="bi bi-info-circle-fill"></i> Ver Filmografía
+ </a>
+      </div>
+      </div>
+   </div>
         }
     </div>
 }
 else
 {
     <div class="empty-state">
-        <div class="empty-state-icon">
-            <i class="bi bi-search"></i>
-        </div>
+    <div class="empty-state-icon">
+    <i class="bi bi-search"></i>
+  </div>
         <h3 class="text-muted mb-3">No se encontraron actores</h3>
-        <p class="text-muted mb-4">
-            @if (!string.IsNullOrEmpty(ViewBag.Buscar as string))
-            {
-                <span>Tu búsqueda <strong>"@ViewBag.Buscar"</strong> no dio resultados.</span>
+<p class="text-muted mb-4">
+   @if (!string.IsNullOrEmpty(ViewBag.Buscar as string))
+      {
+    <span>Tu búsqueda <strong>"@ViewBag.Buscar"</strong> no dio resultados.</span>
+      }
+  else
+ {
+        <span>No hay actores registrados en la base de datos.</span>
             }
-            else
-            {
-                <span>No hay actores registrados en la base de datos.</span>
-            }
-        </p>
-        <a asp-action="Index" class="btn btn-outline-danger">
+   </p>
+   <a asp-action="Index" class="btn btn-outline-danger">
             <i class="bi bi-arrow-clockwise"></i> Limpiar Búsqueda
-        </a>
-    </div>
+   </a>
+  </div>
 }

@@ -15,12 +15,30 @@
     .hero-poster {
         background: linear-gradient(135deg, rgba(229, 9, 20, 0.3), rgba(255, 64, 87, 0.3));
         border-radius: 15px;
-        padding: 3rem 2rem;
-        text-align: center;
+        padding: 0;
+        overflow: hidden;
         border: 2px solid rgba(229, 9, 20, 0.3);
         box-shadow: 0 10px 30px rgba(229, 9, 20, 0.3);
         position: sticky;
         top: 100px;
+    }
+
+    .poster-image-large {
+        width: 100%;
+        height: auto;
+        max-height: 600px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .poster-placeholder-large {
+        height: 600px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.3), rgba(255, 64, 87, 0.3));
+        padding: 3rem 2rem;
     }
 
     .hero-icon {
@@ -38,13 +56,36 @@
         -webkit-text-fill-color: transparent;
         background-clip: text;
         margin-bottom: 0.5rem;
+        padding: 0 1rem;
+        text-align: center;
+    }
+
+    .poster-info-overlay {
+      background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.9) 100%);
+        padding: 2rem 1.5rem 1.5rem;
+    position: relative;
+    }
+
+    .type-badge-large {
+        position: absolute;
+   top: 15px;
+    right: 15px;
+        background: rgba(229, 9, 20, 0.95);
+        padding: 0.6rem 1.2rem;
+        border-radius: 25px;
+        font-size: 0.9rem;
+ font-weight: 700;
+        text-transform: uppercase;
+      letter-spacing: 1px;
+        box-shadow: 0 5px 20px rgba(229, 9, 20, 0.6);
+        z-index: 10;
     }
 
     .info-section {
         background: linear-gradient(135deg, rgba(31, 31, 31, 0.95), rgba(41, 41, 41, 0.95));
         border: 1px solid rgba(229, 9, 20, 0.2);
         border-radius: 15px;
-        padding: 0;
+ padding: 0;
         margin-bottom: 1.5rem;
         overflow: hidden;
         box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
@@ -58,10 +99,10 @@
 
     .section-body {
         padding: 1.5rem;
-    }
+  }
 
     .info-row {
-        padding: 0.75rem 0;
+      padding: 0.75rem 0;
         border-bottom: 1px solid rgba(229, 9, 20, 0.1);
     }
 
@@ -72,26 +113,26 @@
     .info-label {
         font-weight: 600;
         color: var(--text-muted);
-        text-transform: uppercase;
-        font-size: 0.85rem;
-        letter-spacing: 0.5px;
+  text-transform: uppercase;
+   font-size: 0.85rem;
+  letter-spacing: 0.5px;
     }
 
     .info-value {
-        font-size: 1.1rem;
-        color: var(--text-light);
+    font-size: 1.1rem;
+  color: var(--text-light);
     }
 
     .actor-item {
         background: rgba(41, 41, 41, 0.6);
         border: 1px solid rgba(229, 9, 20, 0.2);
-        border-radius: 10px;
+     border-radius: 10px;
         padding: 1rem;
-        transition: all 0.3s ease;
+  transition: all 0.3s ease;
     }
 
     .actor-item:hover {
-        background: rgba(229, 9, 20, 0.1);
+      background: rgba(229, 9, 20, 0.1);
         border-color: rgba(229, 9, 20, 0.5);
         transform: translateX(5px);
     }
@@ -101,16 +142,16 @@
         color: #000;
         border-radius: 15px;
         padding: 2rem;
-        text-align: center;
-        box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+text-align: center;
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
         margin-bottom: 1.5rem;
     }
 
     .review-card {
-        background: rgba(41, 41, 41, 0.6);
+    background: rgba(41, 41, 41, 0.6);
         border: 1px solid rgba(229, 9, 20, 0.2);
         border-radius: 10px;
-        padding: 1rem;
+     padding: 1rem;
         margin-bottom: 1rem;
         transition: all 0.3s ease;
     }
@@ -121,10 +162,10 @@
     }
 
     .detail-badge {
-        padding: 0.5rem 1.25rem;
+    padding: 0.5rem 1.25rem;
         border-radius: 20px;
         font-weight: 600;
-        font-size: 1rem;
+   font-size: 1rem;
         margin-right: 0.5rem;
         margin-bottom: 0.5rem;
         display: inline-block;
@@ -142,17 +183,55 @@
 <div class="row">
     <div class="col-lg-4">
         <div class="hero-poster">
+            @if (!string.IsNullOrEmpty(Model.Poster))
+       {
+        <!-- Badge de tipo sobre el póster -->
+ <span class="type-badge-large">
             @if (Model.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula)
-            {
-                <i class="bi bi-camera-reels-fill hero-icon"></i>
-            }
+     {
+  <i class="bi bi-camera-reels"></i> <text>Película</text>
+         }
+  else
+        {
+        <i class="bi bi-tv"></i> <text>Serie</text>
+     }
+            </span>
+                
+      <!-- Póster real -->
+   <img src="@Model.Poster" 
+    alt="Póster de @Model.Titulo" 
+class="poster-image-large"
+          onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'poster-placeholder-large\'><i class=\'bi-@(Model.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula ? "camera-reels-fill" : "tv-fill") hero-icon\'></i><h2 class=\'hero-title\'>@Model.Titulo</h2><p class=\'text-muted fs-5 mb-0\'>@Model.Tipo • @Model.Anio</p></div>';" />
+        
+           <!-- Overlay con info básica -->
+           <div class="poster-info-overlay">
+           <h2 class="hero-title">@Model.Titulo</h2>
+      <p class="text-muted fs-5 mb-0">
+      @Model.Genero.Nombre • @Model.Anio
+  @if (Model.Duracion > 0)
+      {
+              <text> • @Model.Duracion min</text>
+     }
+       </p>
+       </div>
+     }
             else
             {
-                <i class="bi bi-tv-fill hero-icon"></i>
+  <!-- Placeholder si no hay póster -->
+           <div class="poster-placeholder-large">
+           @if (Model.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula)
+        {
+            <i class="bi bi-camera-reels-fill hero-icon"></i>
+      }
+         else
+     {
+   <i class="bi bi-tv-fill hero-icon"></i>
+    }
+     <h2 class="hero-title">@Model.Titulo</h2>
+ <p class="text-muted fs-5 mb-0">@Model.Tipo • @Model.Anio</p>
+         </div>
             }
-            <h2 class="hero-title">@Model.Titulo</h2>
-            <p class="text-muted fs-5 mb-0">@Model.Tipo · @Model.Anio</p>
-        </div>
+  </div>
     </div>
 
     <div class="col-lg-8">
@@ -160,191 +239,201 @@
         
         <div class="mb-4">
             <span class="detail-badge bg-danger">
-                <i class="bi bi-@(Model.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula ? "camera-reels" : "tv")"></i> 
-                @Model.Tipo
+           <i class="bi bi-@(Model.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula ? "camera-reels" : "tv")"></i> 
+        @Model.Tipo
             </span>
-            <span class="detail-badge bg-secondary">
-                <i class="bi bi-tag-fill"></i> @Model.Genero.Nombre
+         <span class="detail-badge bg-secondary">
+    <i class="bi bi-tag-fill"></i> @Model.Genero.Nombre
             </span>
             <span class="detail-badge bg-info">
-                <i class="bi bi-calendar"></i> @Model.Anio
-            </span>
+      <i class="bi bi-calendar"></i> @Model.Anio
+   </span>
             @if (Model.Duracion > 0)
             {
-                <span class="detail-badge bg-warning text-dark">
-                    <i class="bi bi-clock"></i> @Model.Duracion min
-                </span>
-            }
+          <span class="detail-badge bg-warning text-dark">
+         <i class="bi bi-clock"></i> @Model.Duracion min
+      </span>
+   }
         </div>
 
-        @if (Model.Valoraciones.Any())
-        {
-            var promedio = Model.Valoraciones.Average(v => v.Puntuacion);
-            <div class="rating-showcase-detail">
-                <h3 class="mb-2">
-                    <i class="bi bi-trophy-fill"></i> Valoración
-                </h3>
-                <div class="display-3 fw-bold mb-1">
-                    @promedio.ToString("F1") <i class="bi bi-star-fill"></i>
-                </div>
-                <p class="fs-6 mb-0">@Model.Valoraciones.Count valoraciones</p>
-            </div>
+      @if (Model.Valoraciones.Any())
+   {
+ var promedio = Model.Valoraciones.Average(v => v.Puntuacion);
+          <div class="rating-showcase-detail">
+      <h3 class="mb-2">
+         <i class="bi bi-trophy-fill"></i> Valoración
+     </h3>
+<div class="display-3 fw-bold mb-1">
+        @promedio.ToString("F1") <i class="bi bi-star-fill"></i>
+ </div>
+     <p class="fs-6 mb-0">@Model.Valoraciones.Count valoraciones</p>
+      </div>
         }
 
         <div class="info-section">
-            <div class="section-header">
-                <h5 class="mb-0">
-                    <i class="bi bi-info-circle-fill"></i> Información General
-                </h5>
+    <div class="section-header">
+        <h5 class="mb-0">
+     <i class="bi bi-info-circle-fill"></i> Información General
+        </h5>
             </div>
-            <div class="section-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="info-row">
-                            <div class="info-label">Director</div>
-                            <div class="info-value">
-                                <i class="bi bi-person-badge text-danger"></i> @Model.Director
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="info-row">
-                            <div class="info-label">Género</div>
-                            <div class="info-value">
-                                <a asp-controller="Generos" asp-action="Details" asp-route-id="@Model.GeneroId" 
-                                   class="text-decoration-none text-danger">
-                                    <i class="bi bi-tag"></i> @Model.Genero.Nombre
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="info-row">
-                            <div class="info-label">Fecha de Estreno</div>
-                            <div class="info-value">
-                                <i class="bi bi-calendar-event text-info"></i> 
-                                @Model.FechaEstreno.ToString("dd MMMM yyyy")
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="info-row">
-                            <div class="info-label">Duración</div>
-                            <div class="info-value">
-                                <i class="bi bi-hourglass-split text-warning"></i> @Model.Duracion minutos
-                            </div>
-                        </div>
-                    </div>
-                    @if (Model.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Serie && Model.NumeroTemporadas.HasValue)
-                    {
-                        <div class="col-md-12">
-                            <div class="info-row">
-                                <div class="info-label">Temporadas</div>
-                                <div class="info-value">
-                                    <i class="bi bi-collection-play text-success"></i> @Model.NumeroTemporadas temporadas
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
+     <div class="section-body">
+        <div class="row">
+          <div class="col-md-6">
+ <div class="info-row">
+          <div class="info-label">Director</div>
+            <div class="info-value">
+              <i class="bi bi-person-badge text-danger"></i> @Model.Director
+  </div>
+      </div>
+      </div>
+             <div class="col-md-6">
+   <div class="info-row">
+      <div class="info-label">Género</div>
+  <div class="info-value">
+     <a asp-controller="Generos" asp-action="Details" asp-route-id="@Model.GeneroId" 
+        class="text-decoration-none text-danger">
+       <i class="bi bi-tag"></i> @Model.Genero.Nombre
+            </a>
             </div>
+   </div>
+  </div>
+        <div class="col-md-6">
+            <div class="info-row">
+        <div class="info-label">Fecha de Estreno</div>
+   <div class="info-value">
+              <i class="bi bi-calendar-event text-info"></i> 
+    @Model.FechaEstreno.ToString("dd MMMM yyyy")
+    </div>
+       </div>
+      </div>
+             <div class="col-md-6">
+   <div class="info-row">
+      <div class="info-label">Duración</div>
+             <div class="info-value">
+         <i class="bi bi-hourglass-split text-warning"></i> @Model.Duracion minutos
+  </div>
+       </div>
+           </div>
+           @if (Model.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Serie && Model.NumeroTemporadas.HasValue)
+         {
+   <div class="col-md-12">
+         <div class="info-row">
+        <div class="info-label">Temporadas</div>
+        <div class="info-value">
+        <i class="bi bi-collection-play text-success"></i> @Model.NumeroTemporadas temporadas
+       </div>
+  </div>
+    </div>
+        }
+     </div>
         </div>
+  </div>
 
         <div class="info-section">
-            <div class="section-header">
-                <h5 class="mb-0">
-                    <i class="bi bi-file-text-fill"></i> Sinopsis
+          <div class="section-header">
+   <h5 class="mb-0">
+    <i class="bi bi-file-text-fill"></i> Sinopsis
                 </h5>
-            </div>
+  </div>
             <div class="section-body">
                 <p class="fs-6 lh-lg mb-0">@Model.Descripcion</p>
             </div>
-        </div>
+     </div>
 
         @if (Model.ContenidoActores.Any())
-        {
+    {
             <div class="info-section">
-                <div class="section-header">
-                    <h5 class="mb-0">
-                        <i class="bi bi-people-fill"></i> Reparto Principal
-                    </h5>
-                </div>
-                <div class="section-body">
-                    <div class="row g-3">
-                        @foreach (var ca in Model.ContenidoActores.OrderByDescending(ca => ca.EsProtagonista))
-                        {
-                            <div class="col-md-6">
-                                <div class="actor-item">
-                                    <div class="d-flex align-items-center">
-                                        <div class="flex-shrink-0">
-                                            <i class="bi bi-person-circle display-5 text-danger"></i>
-                                        </div>
-                                        <div class="flex-grow-1 ms-3">
-                                            <h6 class="mb-1 fw-bold">
-                                                <a asp-controller="Actores" asp-action="Details" asp-route-id="@ca.ActorId" 
-                                                   class="text-decoration-none text-light">
-                                                    @ca.Actor.Nombre @ca.Actor.Apellidos
-                                                </a>
-                                                @if (ca.EsProtagonista)
-                                                {
-                                                    <span class="badge bg-warning text-dark ms-2">
-                                                        <i class="bi bi-star-fill"></i> Protagonista
-                                                    </span>
-                                                }
-                                            </h6>
-                                            <small class="text-muted">
-                                                <i class="bi bi-person"></i> @ca.Papel
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
-            </div>
-        }
+        <div class="section-header">
+          <h5 class="mb-0">
+            <i class="bi bi-people-fill"></i> Reparto Principal
+            </h5>
+     </div>
+      <div class="section-body">
+    <div class="row g-3">
+          @foreach (var ca in Model.ContenidoActores.OrderByDescending(ca => ca.EsProtagonista))
+           {
+    <div class="col-md-6">
+          <div class="actor-item">
+   <div class="d-flex align-items-center">
+    <div class="flex-shrink-0">
+      @if (!string.IsNullOrEmpty(ca.Actor.Foto))
+          {
+              <img src="@ca.Actor.Foto" 
+         alt="@ca.Actor.Nombre @ca.Actor.Apellidos" 
+   style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #17a2b8;"
+      onerror="this.onerror=null; this.src='/images/no-actor-photo.svg';" />
+         }
+             else
+ {
+           <i class="bi bi-person-circle display-5 text-info"></i>
+             }
+ </div>
+             <div class="flex-grow-1 ms-3">
+      <h6 class="mb-1 fw-bold">
+      <a asp-controller="Actores" asp-action="Details" asp-route-id="@ca.ActorId" 
+    class="text-decoration-none text-light">
+      @ca.Actor.Nombre @ca.Actor.Apellidos
+     </a>
+            @if (ca.EsProtagonista)
+       {
+      <span class="badge bg-warning text-dark ms-2">
+        <i class="bi bi-star-fill"></i> Protagonista
+          </span>
+}
+      </h6>
+          <small class="text-muted">
+      <i class="bi bi-person"></i> @ca.Papel
+    </small>
+    </div>
+             </div>
+     </div>
+      </div>
+    }
+  </div>
+       </div>
+     </div>
+  }
 
         @if (Model.Valoraciones.Any())
-        {
-            <div class="info-section">
-                <div class="section-header">
-                    <h5 class="mb-0">
-                        <i class="bi bi-chat-quote-fill"></i> Últimas Valoraciones
-                    </h5>
+    {
+         <div class="info-section">
+       <div class="section-header">
+           <h5 class="mb-0">
+    <i class="bi bi-chat-quote-fill"></i> Últimas Valoraciones
+     </h5>
                 </div>
-                <div class="section-body">
-                    @foreach (var valoracion in Model.Valoraciones.OrderByDescending(v => v.FechaValoracion).Take(5))
-                    {
-                        <div class="review-card">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <strong class="fs-6">
-                                    <i class="bi bi-person-fill text-info"></i> @valoracion.NombreUsuario
-                                </strong>
-                                <span class="text-warning fs-5">
-                                    @for (int i = 1; i <= 5; i++)
-                                    {
-                                        if (i <= valoracion.Puntuacion)
-                                        {
-                                            <i class="bi bi-star-fill"></i>
-                                        }
-                                        else
-                                        {
-                                            <i class="bi bi-star"></i>
-                                        }
-                                    }
-                                </span>
-                            </div>
-                            @if (!string.IsNullOrEmpty(valoracion.Comentario))
-                            {
-                                <p class="mb-2 text-muted">@valoracion.Comentario</p>
-                            }
-                            <small class="text-muted">
-                                <i class="bi bi-calendar-check"></i> @valoracion.FechaValoracion.ToString("dd MMMM yyyy")
-                            </small>
-                        </div>
-                    }
-                </div>
+        <div class="section-body">
+ @foreach (var valoracion in Model.Valoraciones.OrderByDescending(v => v.FechaValoracion).Take(5))
+          {
+              <div class="review-card">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+   <strong class="fs-6">
+        <i class="bi bi-person-fill text-info"></i> @valoracion.NombreUsuario
+   </strong>
+          <span class="text-warning fs-5">
+        @for (int i = 1; i <= 5; i++)
+       {
+       if (i <= valoracion.Puntuacion)
+     {
+         <i class="bi bi-star-fill"></i>
+       }
+   else
+       {
+  <i class="bi bi-star"></i>
+      }
+             }
+             </span>
+        </div>
+      @if (!string.IsNullOrEmpty(valoracion.Comentario))
+       {
+        <p class="mb-2 text-muted">@valoracion.Comentario</p>
+            }
+           <small class="text-muted">
+             <i class="bi bi-calendar-check"></i> @valoracion.FechaValoracion.ToString("dd MMMM yyyy")
+    </small>
+    </div>
+        }
+</div>
             </div>
         }
     </div>

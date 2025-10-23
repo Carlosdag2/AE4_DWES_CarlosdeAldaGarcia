@@ -49,3 +49,4 @@ C:\Users\CampusFP\Desktop\CARLOS\DWES\Primer_trimestre\NET\Actividades_Evaluable
 C:\Users\CampusFP\Desktop\CARLOS\DWES\Primer_trimestre\NET\Actividades_Evaluables\AE4_DWES_CarlosdeAldaGarcia\obj\Debug\net8.0\AE4_DWES_CarlosdeAldaGarcia.pdb
 C:\Users\CampusFP\Desktop\CARLOS\DWES\Primer_trimestre\NET\Actividades_Evaluables\AE4_DWES_CarlosdeAldaGarcia\obj\Debug\net8.0\AE4_DWES_CarlosdeAldaGarcia.genruntimeconfig.cache
 C:\Users\CampusFP\Desktop\CARLOS\DWES\Primer_trimestre\NET\Actividades_Evaluables\AE4_DWES_CarlosdeAldaGarcia\obj\Debug\net8.0\ref\AE4_DWES_CarlosdeAldaGarcia.dll
+C:\Users\CampusFP\Desktop\CARLOS\DWES\Primer_trimestre\NET\Actividades_Evaluables\AE4_DWES_CarlosdeAldaGarcia\obj\Debug\net8.0\AE4_DWES_CarlosdeAldaGarcia.sourcelink.json

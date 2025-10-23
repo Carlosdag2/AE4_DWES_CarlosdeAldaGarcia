@@ -4,76 +4,306 @@
     ViewData["Title"] = "Resultados de búsqueda";
 }
 
-<h1><i class="bi bi-search text-danger"></i> Resultados de búsqueda</h1>
-<p class="lead">Búsqueda: <strong>"@ViewBag.Termino"</strong></p>
+<style>
+    .search-page-header {
+background: linear-gradient(135deg, rgba(229, 9, 20, 0.1), rgba(255, 64, 87, 0.1));
+      border-radius: 20px;
+    padding: 2rem;
+     margin-bottom: 2rem;
+      border: 1px solid rgba(229, 9, 20, 0.3);
+    }
 
-@if (Model.Any())
-{
-    <p class="text-muted">Se encontraron @Model.Count() resultados</p>
+    .search-box {
+        position: relative;
+    }
 
-    <div class="row row-cols-1 row-cols-md-4 g-4">
-        @foreach (var item in Model)
-        {
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-header bg-dark text-white">
-                        @if (item.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula)
-                        {
-                            <i class="bi bi-camera-reels"></i>
-                        }
-                        else
-                        {
-                            <i class="bi bi-tv"></i>
-                        }
-                        @item.Tipo
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">@item.Titulo</h5>
-                        <p class="text-muted mb-2">
-                            <small>
-                                <i class="bi bi-calendar"></i> @item.Anio |
-                                <i class="bi bi-tag"></i> @item.Genero.Nombre
-                            </small>
-                        </p>
-                        <p class="card-text small">@item.Descripcion.Substring(0, Math.Min(80, item.Descripcion.Length))...</p>
-                        
-                        @if (item.Valoraciones.Any())
-                        {
-                            var promedio = item.Valoraciones.Average(v => v.Puntuacion);
-                            <p class="text-warning mb-2">
-                                @for (int i = 1; i <= 5; i++)
-                                {
-                                    if (i <= promedio)
-                                    {
-                                        <i class="bi bi-star-fill"></i>
-                                    }
-                                    else
-                                    {
-                                        <i class="bi bi-star"></i>
-                                    }
-                                }
-                            </p>
-                        }
-                    </div>
-                    <div class="card-footer">
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger w-100">
-                            <i class="bi bi-info-circle"></i> Ver Detalles
-                        </a>
-                    </div>
-                </div>
-            </div>
+    .search-box input {
+        padding-left: 3rem;
+    }
+
+    .search-box i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+    color: var(--text-muted);
+font-size: 1.2rem;
+z-index: 10;
+    }
+
+    .search-spinner {
+        position: absolute;
+ right: 1.5rem;
+     top: 50%;
+   transform: translateY(-50%);
+        z-index: 10;
+    }
+
+    .content-grid-card {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .content-grid-card:hover {
+        transform: translateY(-10px) scale(1.02);
+    }
+
+    .poster-container {
+   position: relative;
+    height: 350px;
+        overflow: hidden;
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.2), rgba(255, 64, 87, 0.2));
+    }
+
+    .poster-image {
+   width: 100%;
+        height: 100%;
+        object-fit: cover;
+      transition: all 0.4s ease;
+    }
+
+    .content-grid-card:hover .poster-image {
+        transform: scale(1.1);
+    }
+
+    .poster-placeholder {
+   background: linear-gradient(135deg, rgba(229, 9, 20, 0.3), rgba(255, 64, 87, 0.3));
+   height: 350px;
+ display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 5rem;
+        color: rgba(255, 255, 255, 0.3);
+    }
+
+    .poster-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+        padding: 1rem;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .content-grid-card:hover .poster-overlay {
+        opacity: 1;
+    }
+
+    .type-badge {
+        position: absolute;
+   top: 10px;
+      right: 10px;
+        background: rgba(229, 9, 20, 0.95);
+        padding: 0.4rem 0.9rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+      font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+     box-shadow: 0 4px 15px rgba(229, 9, 20, 0.5);
+        z-index: 10;
+    }
+
+    .genre-badge {
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.8), rgba(178, 7, 16, 0.8));
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+    font-weight: 600;
+        text-transform: uppercase;
+letter-spacing: 0.5px;
+    }
+
+    .year-badge {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(229, 9, 20, 0.4);
+        padding: 0.3rem 0.8rem;
+        border-radius: 15px;
+        font-weight: 600;
+    }
+
+    .card-title {
+ display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: 3rem;
+    }
+
+    .search-results-container {
+    animation: fadeInUp 0.3s ease-out;
+    }
+
+    @@keyframes fadeInUp {
+  from {
+       opacity: 0;
+         transform: translateY(20px);
+  }
+        to {
+  opacity: 1;
+      transform: translateY(0);
+  }
+    }
+</style>
+
+<div class="search-page-header">
+    <h1 class="display-5 fw-bold mb-2">
+        <i class="bi bi-search text-danger"></i> Búsqueda de Contenidos
+    </h1>
+    <p class="lead mb-0">Encuentra tus películas y series favoritas</p>
+</div>
+
+<!-- Búsqueda -->
+<div class="mb-4">
+    <form asp-controller="Contenidos" asp-action="Buscar" method="get">
+        <div class="search-box">
+            <i class="bi bi-search"></i>
+    <input type="text" name="termino" class="form-control form-control-lg" 
+      placeholder="Buscar por título, director o descripción..." 
+    style="border-radius: 25px;">
+        </div>
+    </form>
+</div>
+
+<!-- Resultados iniciales (si viene de un form submit) -->
+<div id="initialResults">
+    @if (!string.IsNullOrEmpty(ViewBag.Termino as string))
+    {
+        <div class="mb-3">
+    <span class="badge bg-danger fs-6">
+    <i class="bi bi-collection"></i> @Model.Count() resultado@(Model.Count() != 1 ? "s" : "") para "<strong>@ViewBag.Termino</strong>"
+            </span>
+        </div>
+    }
+
+    @if (Model.Any())
+    {
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+      @foreach (var item in Model)
+  {
+<div class="col">
+     <div class="card content-grid-card shadow-lg h-100">
+                <!-- Póster o placeholder -->
+     <div class="poster-container">
+               @if (!string.IsNullOrEmpty(item.Poster))
+               {
+ <img src="@item.Poster" 
+      alt="Póster de @item.Titulo" 
+    class="poster-image"
+           onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'poster-placeholder\'><i class=\'bi bi-@(item.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula ? "camera-reels-fill" : "tv-fill")\'></i></div>';" />
+  }
+                else
+             {
+         <div class="poster-placeholder">
+         @if (item.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula)
+              {
+         <i class="bi bi-camera-reels-fill"></i>
         }
+       else
+               {
+              <i class="bi bi-tv-fill"></i>
+   }
     </div>
-}
-else
-{
-    <div class="alert alert-warning" role="alert">
-        <i class="bi bi-exclamation-triangle"></i> No se encontraron resultados para la búsqueda: <strong>"@ViewBag.Termino"</strong>
-    </div>
-}
+     }
+          
+     <!-- Badge de tipo -->
+       <span class="type-badge">
+         @if (item.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula)
+         {
+      <i class="bi bi-camera-reels"></i> <text>Película</text>
+         }
+     else
+      {
+<i class="bi bi-tv"></i> <text>Serie</text>
+            }
+   </span>
+
+      <!-- Overlay con info adicional -->
+   <div class="poster-overlay">
+        <small class="text-white">
+          <i class="bi bi-clock"></i> @item.Duracion min
+        @if (item.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Serie && item.NumeroTemporadas.HasValue)
+        {
+    <text> | <i class="bi bi-collection-play"></i> @item.NumeroTemporadas temporadas</text>
+              }
+        </small>
+</div>
+   </div>
+       
+      <div class="card-body">
+   <div class="d-flex justify-content-between align-items-start mb-2">
+              <span class="genre-badge">@item.Genero.Nombre</span>
+      <span class="year-badge">@item.Anio</span>
+          </div>
+
+   <h5 class="card-title fw-bold mb-2" style="line-height: 1.3;">
+   @item.Titulo
+      </h5>
+         
+        <p class="text-muted small mb-2">
+        <i class="bi bi-person-fill text-info"></i> @item.Director
+                </p>
+
+        <p class="card-text small mb-3" style="line-height: 1.5; color: var(--text-muted);">
+     @item.Descripcion.Substring(0, Math.Min(100, item.Descripcion.Length))...
+        </p>
+          
+                @if (item.Valoraciones.Any())
+         {
+  var promedio = item.Valoraciones.Average(v => v.Puntuacion);
+       <div class="d-flex align-items-center gap-2 mb-3">
+      <span class="text-warning">
+             @for (int i = 1; i <= 5; i++)
+          {
+            if (i <= promedio)
+           {
+          <i class="bi bi-star-fill"></i>
+    }
+     else
+       {
+    <i class="bi bi-star"></i>
+  }
+        }
+        </span>
+         <small class="text-muted">
+   <strong>@promedio.ToString("F1")</strong>
+      (@item.Valoraciones.Count)
+     </small>
+        </div>
+          }
+               </div>
+
+<div class="card-footer">
+             <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-danger w-100">
+             <i class="bi bi-play-circle-fill"></i> Ver Detalles
+           </a>
+      </div>
+ </div>
+   </div>
+            }
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(ViewBag.Termino as string))
+    {
+        <div class="text-center py-5">
+          <div class="mb-4">
+                <i class="bi bi-search" style="font-size: 5rem; color: var(--text-muted);"></i>
+   </div>
+          <h3 class="text-muted">No se encontraron resultados</h3>
+     <p class="text-muted">Tu búsqueda "<strong>@ViewBag.Termino</strong>" no dio resultados.</p>
+            <a asp-action="Index" class="btn btn-outline-danger mt-3">
+   <i class="bi bi-arrow-clockwise"></i> Volver al Catálogo
+    </a>
+  </div>
+    }
+</div>
 
 <div class="mt-4">
-    <a asp-action="Index" class="btn btn-outline-secondary">
-        <i class="bi bi-arrow-left"></i> Volver al catálogo
+    <a asp-action="Index" class="btn btn-outline-danger btn-lg">
+ <i class="bi bi-arrow-left-circle"></i> Volver al Catálogo
     </a>
 </div>

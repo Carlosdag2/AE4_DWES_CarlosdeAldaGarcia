@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AE4_DWES_CarlosdeAldaGarcia")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fb6cad227c4ab1524da2cb490d86ae75ff8abbd3")]
 [assembly: System.Reflection.AssemblyProductAttribute("AE4_DWES_CarlosdeAldaGarcia")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AE4_DWES_CarlosdeAldaGarcia")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

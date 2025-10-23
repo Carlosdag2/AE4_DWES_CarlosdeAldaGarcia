@@ -2,10 +2,112 @@
 
 @{
     ViewData["Title"] = $"{Model.Nombre} {Model.Apellidos}";
+    var edad = DateTime.Now.Year - Model.FechaNacimiento.Year;
+    if (DateTime.Now.DayOfYear < Model.FechaNacimiento.DayOfYear) edad--;
 }
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+<style>
+    .details-breadcrumb {
+        background: rgba(31, 31, 31, 0.6);
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+    }
+
+    .actor-profile-photo {
+        background: linear-gradient(135deg, rgba(23, 162, 184, 0.3), rgba(19, 132, 150, 0.3));
+        border-radius: 15px;
+        padding: 0;
+        overflow: hidden;
+        border: 2px solid rgba(23, 162, 184, 0.3);
+  box-shadow: 0 10px 30px rgba(23, 162, 184, 0.3);
+        position: sticky;
+  top: 100px;
+    }
+
+    .actor-photo-large {
+        width: 100%;
+      height: auto;
+        max-height: 500px;
+        object-fit: cover;
+    }
+
+    .actor-photo-placeholder-large {
+        height: 500px;
+        display: flex;
+        align-items: center;
+ justify-content: center;
+        font-size: 10rem;
+      color: rgba(255, 255, 255, 0.3);
+        background: linear-gradient(135deg, rgba(23, 162, 184, 0.3), rgba(19, 132, 150, 0.3));
+    }
+
+    .actor-name-title {
+ font-size: 1.5rem;
+    font-weight: 700;
+     background: linear-gradient(45deg, #fff, #17a2b8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+   background-clip: text;
+      margin: 1rem 0;
+    }
+
+    .info-section {
+        background: linear-gradient(135deg, rgba(31, 31, 31, 0.95), rgba(41, 41, 41, 0.95));
+   border: 1px solid rgba(23, 162, 184, 0.2);
+        border-radius: 15px;
+        padding: 0;
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .section-header {
+  background: linear-gradient(135deg, rgba(23, 162, 184, 0.9), rgba(19, 132, 150, 0.9));
+   padding: 1rem 1.5rem;
+        border-bottom: 2px solid rgba(23, 162, 184, 0.5);
+    }
+
+    .section-body {
+        padding: 1.5rem;
+    }
+
+    .filmography-card {
+     background: rgba(41, 41, 41, 0.6);
+        border: 1px solid rgba(23, 162, 184, 0.2);
+        border-radius: 10px;
+    transition: all 0.3s ease;
+        height: 100%;
+    overflow: hidden;
+    }
+
+    .filmography-card:hover {
+     background: rgba(23, 162, 184, 0.1);
+   border-color: rgba(23, 162, 184, 0.5);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(23, 162, 184, 0.3);
+    }
+
+    .filmography-poster {
+        width: 100%;
+      height: 200px;
+        object-fit: cover;
+    }
+
+    .filmography-poster-placeholder {
+  width: 100%;
+        height: 200px;
+  display: flex;
+        align-items: center;
+  justify-content: center;
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.3), rgba(255, 64, 87, 0.3));
+    font-size: 4rem;
+        color: rgba(255, 255, 255, 0.3);
+    }
+</style>
+
+<nav class="details-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0">
         <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Inicio</a></li>
         <li class="breadcrumb-item"><a asp-controller="Actores" asp-action="Index">Actores</a></li>
         <li class="breadcrumb-item active" aria-current="page">@Model.Nombre @Model.Apellidos</li>
@@ -13,117 +115,180 @@
 </nav>
 
 <div class="row">
-    <div class="col-md-4">
-        <div class="card shadow-lg">
-            <div class="card-body text-center">
-                <i class="bi bi-person-circle display-1 text-danger"></i>
-                <h3 class="mt-3">@Model.Nombre @Model.Apellidos</h3>
-                <p class="text-muted">Actor/Actriz</p>
-            </div>
-        </div>
-
-        <div class="card mt-3 shadow-sm">
-            <div class="card-body">
-                <h5><i class="bi bi-info-circle text-danger"></i> Información Personal</h5>
-                <hr>
-                <dl>
-                    <dt>Fecha de Nacimiento:</dt>
-                    <dd>@Model.FechaNacimiento.ToString("dd/MM/yyyy")</dd>
-                    
-                    <dt>Edad:</dt>
-                    <dd>@((DateTime.Now.Year - Model.FechaNacimiento.Year)) años</dd>
-
-                    <dt>Nacionalidad:</dt>
-                    <dd><i class="bi bi-flag"></i> @Model.Nacionalidad</dd>
-
-                    <dt>Producciones:</dt>
-                    <dd>@Model.ContenidoActores.Count</dd>
-                </dl>
-            </div>
+    <div class="col-lg-4">
+        <div class="actor-profile-photo">
+  @if (!string.IsNullOrEmpty(Model.Foto))
+            {
+   <img src="@Model.Foto" 
+             alt="Foto de @Model.Nombre @Model.Apellidos" 
+         class="actor-photo-large"
+      onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'actor-photo-placeholder-large\'><i class=\'bi bi-person-circle\'></i></div>';" />
+            }
+     else
+         {
+      <div class="actor-photo-placeholder-large">
+       <i class="bi bi-person-circle"></i>
+     </div>
+  }
+          <div class="card-body text-center">
+                <h3 class="actor-name-title">@Model.Nombre @Model.Apellidos</h3>
+       <p class="text-muted"><i class="bi bi-star-fill text-warning"></i> Actor/Actriz</p>
+    </div>
         </div>
     </div>
 
-    <div class="col-md-8">
-        <h1>@Model.Nombre @Model.Apellidos</h1>
+    <div class="col-lg-8">
+        <h1 class="display-5 fw-bold mb-3">@Model.Nombre @Model.Apellidos</h1>
         
-        @if (!string.IsNullOrEmpty(Model.Biografia))
+@if (!string.IsNullOrEmpty(Model.Biografia))
         {
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5><i class="bi bi-file-text text-danger"></i> Biografía</h5>
-                    <hr>
-                    <p>@Model.Biografia</p>
-                </div>
-            </div>
+    <div class="info-section">
+         <div class="section-header">
+   <h5 class="mb-0">
+        <i class="bi bi-file-text-fill"></i> Biografía
+      </h5>
+      </div>
+          <div class="section-body">
+       <p class="fs-6 lh-lg mb-0">@Model.Biografia</p>
+     </div>
+      </div>
         }
 
-        @if (Model.ContenidoActores.Any())
-        {
-            <div class="card">
-                <div class="card-body">
-                    <h5><i class="bi bi-film text-danger"></i> Filmografía (@Model.ContenidoActores.Count)</h5>
-                    <hr>
-                    
-                    <div class="row row-cols-1 row-cols-md-2 g-3">
-                        @foreach (var ca in Model.ContenidoActores.OrderByDescending(ca => ca.Contenido.Anio))
-                        {
-                            <div class="col">
-                                <div class="card h-100">
-                                    <div class="card-header bg-dark text-white d-flex justify-content-between">
-                                        <span>
-                                            @if (ca.Contenido.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula)
-                                            {
-                                                <i class="bi bi-camera-reels"></i>
-                                            }
-                                            else
-                                            {
-                                                <i class="bi bi-tv"></i>
-                                            }
-                                            @ca.Contenido.Tipo
-                                        </span>
-                                        <span class="badge bg-danger">@ca.Contenido.Anio</span>
-                                    </div>
-                                    <div class="card-body">
-                                        <h6 class="card-title">@ca.Contenido.Titulo</h6>
-                                        <p class="card-text">
-                                            <small class="text-muted">
-                                                <strong>Papel:</strong> @ca.Papel
-                                                @if (ca.EsProtagonista)
-                                                {
-                                                    <span class="badge bg-warning text-dark">Protagonista</span>
-                                                }
-                                            </small>
-                                        </p>
-                                        <p class="card-text">
-                                            <small class="text-muted">
-                                                <i class="bi bi-tag"></i> @ca.Contenido.Genero.Nombre
-                                            </small>
-                                        </p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <a asp-controller="Contenidos" asp-action="Details" asp-route-id="@ca.ContenidoId" 
-                                           class="btn btn-sm btn-outline-danger w-100">
-                                            <i class="bi bi-info-circle"></i> Ver Detalles
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
-            </div>
+    @if (Model.ContenidoActores.Any())
+{
+       <div class="info-section">
+     <div class="section-header">
+   <h5 class="mb-0">
+ <i class="bi bi-film"></i> Filmografía (@Model.ContenidoActores.Count)
+         </h5>
+          </div>
+           <div class="section-body">
+             <div class="row row-cols-1 row-cols-md-2 g-3">
+        @foreach (var ca in Model.ContenidoActores.OrderByDescending(ca => ca.Contenido.Anio))
+      {
+             <div class="col">
+             <div class="card filmography-card">
+            <!-- Póster de la película/serie -->
+            @if (!string.IsNullOrEmpty(ca.Contenido.Poster))
+    {
+               <img src="@ca.Contenido.Poster" 
+   alt="Póster de @ca.Contenido.Titulo" 
+ class="filmography-poster"
+     onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'filmography-poster-placeholder\'><i class=\'bi bi-@(ca.Contenido.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula ? "camera-reels-fill" : "tv-fill")\'></i></div>';" />
         }
+      else
+            {
+        <div class="filmography-poster-placeholder">
+         @if (ca.Contenido.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula)
+          {
+     <i class="bi bi-camera-reels-fill"></i>
+             }
+      else
+           {
+             <i class="bi bi-tv-fill"></i>
+          }
+          </div>
+    }
+               
+   <div class="card-header bg-transparent border-bottom border-info d-flex justify-content-between align-items-center">
+         <span>
+        @if (ca.Contenido.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula)
+           {
+       <i class="bi bi-camera-reels text-primary"></i>
+       }
         else
-        {
-            <div class="alert alert-info" role="alert">
-                <i class="bi bi-info-circle"></i> Este actor aún no tiene producciones registradas.
+         {
+  <i class="bi bi-tv text-success"></i>
+                }
+@ca.Contenido.Tipo
+            </span>
+       <span class="badge bg-danger">@ca.Contenido.Anio</span>
+            </div>
+             <div class="card-body">
+            <h6 class="card-title fw-bold">@ca.Contenido.Titulo</h6>
+     <p class="card-text mb-2">
+         <small class="text-muted">
+       <i class="bi bi-person"></i> <strong>Papel:</strong> @ca.Papel
+               @if (ca.EsProtagonista)
+      {
+    <span class="badge bg-warning text-dark ms-2">
+        <i class="bi bi-star-fill"></i> Protagonista
+          </span>
+         }
+      </small>
+           </p>
+             <p class="card-text mb-0">
+               <small class="text-muted">
+  <i class="bi bi-tag"></i> @ca.Contenido.Genero.Nombre
+  </small>
+   </p>
+          </div>
+      <div class="card-footer bg-transparent border-top border-info">
+            <a asp-controller="Contenidos" asp-action="Details" asp-route-id="@ca.ContenidoId" 
+    class="btn btn-sm btn-danger w-100">
+  <i class="bi bi-play-circle-fill"></i> Ver Detalles
+              </a>
+           </div>
+        </div>
+   </div>
+   }
+       </div>
+      </div>
             </div>
         }
-    </div>
+     else
+        {
+       <div class="alert alert-info" role="alert">
+         <i class="bi bi-info-circle"></i> Este actor aún no tiene producciones registradas.
+            </div>
+  }
+
+        <!-- Información Personal DESPUÉS de Filmografía -->
+        <div class="info-section">
+    <div class="section-header">
+           <h5 class="mb-0">
+    <i class="bi bi-info-circle-fill"></i> Información Personal
+           </h5>
+   </div>
+   <div class="section-body">
+        <div class="row">
+      <div class="col-md-6">
+    <dl class="mb-0">
+          <dt class="text-muted mb-1">Fecha de Nacimiento:</dt>
+    <dd class="mb-3">
+        <i class="bi bi-calendar-event text-info"></i> 
+       @Model.FechaNacimiento.ToString("dd MMMM yyyy")
+     </dd>
+        
+    <dt class="text-muted mb-1">Edad:</dt>
+           <dd class="mb-0">
+<i class="bi bi-cake2 text-warning"></i> @edad años
+    </dd>
+                 </dl>
+     </div>
+           <div class="col-md-6">
+              <dl class="mb-0">
+    <dt class="text-muted mb-1">Nacionalidad:</dt>
+              <dd class="mb-3">
+   <i class="bi bi-flag-fill text-info"></i> @Model.Nacionalidad
+  </dd>
+
+             <dt class="text-muted mb-1">Producciones:</dt>
+             <dd class="mb-0">
+             <i class="bi bi-film text-danger"></i> 
+        <strong>@Model.ContenidoActores.Count</strong> 
+      @(Model.ContenidoActores.Count == 1 ? "producción" : "producciones")
+             </dd>
+      </dl>
+   </div>
+      </div>
+   </div>
+   </div>
+</div>
 </div>
 
-<div class="mt-3">
-    <a asp-action="Index" class="btn btn-outline-secondary">
-        <i class="bi bi-arrow-left"></i> Volver a actores
+<div class="mt-4">
+    <a asp-action="Index" class="btn btn-outline-danger btn-lg">
+ <i class="bi bi-arrow-left-circle"></i> Volver a Actores
     </a>
 </div>
