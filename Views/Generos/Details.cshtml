@@ -185,23 +185,24 @@ transform: translateY(-10px) scale(1.02);
         @foreach (var contenido in Model.Contenidos.OrderByDescending(c => c.FechaEstreno))
         {
      <div class="col">
-        <div class="card content-grid-card shadow-lg h-100">
-              <!-- Póster o placeholder -->
+        <a asp-controller="Contenidos" asp-action="Details" asp-route-id="@contenido.Id" 
+           class="card content-grid-card shadow-lg h-100" style="text-decoration: none; color: inherit;">
+      <!-- Póster o placeholder -->
     <div class="poster-container">
-         @if (!string.IsNullOrEmpty(contenido.Poster))
-              {
+       @if (!string.IsNullOrEmpty(contenido.Poster))
+ {
      <img src="@contenido.Poster" 
       alt="Póster de @contenido.Titulo" 
        class="poster-image"
      onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'poster-placeholder\'><i class=\'bi bi-@(contenido.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula ? "camera-reels-fill" : "tv-fill")\'></i></div>';" />
-                }
+ }
   else
        {
         <div class="poster-placeholder">
           @if (contenido.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula)
-          {
+    {
       <i class="bi bi-camera-reels-fill"></i>
-            }
+ }
     else
       {
           <i class="bi bi-tv-fill"></i>
@@ -211,81 +212,74 @@ transform: translateY(-10px) scale(1.02);
        
         <!-- Badge de tipo -->
    <span class="type-badge">
-          @if (contenido.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula)
+   @if (contenido.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula)
            {
-        <i class="bi bi-camera-reels"></i> <text>Película</text>
-          }
+     <i class="bi bi-camera-reels"></i> <text>Película</text>
+      }
        else
-         {
+    {
          <i class="bi bi-tv"></i> <text>Serie</text>
-     }
-      </span>
+  }
+   </span>
 
          <!-- Overlay con info adicional -->
-     <div class="poster-overlay">
-                <small class="text-white">
-              <i class="bi bi-person-badge"></i> @contenido.Director
+   <div class="poster-overlay">
+         <small class="text-white">
+    <i class="bi bi-person-badge"></i> @contenido.Director
         <br />
  <i class="bi bi-clock"></i> @contenido.Duracion min
    @if (contenido.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Serie && contenido.NumeroTemporadas.HasValue)
            {
           <text> | <i class="bi bi-collection-play"></i> @contenido.NumeroTemporadas temporadas</text>
-                }
-          </small>
+      }
+  </small>
  </div>
-         </div>
+ </div>
       
          <div class="card-body">
    <div class="d-flex justify-content-between align-items-start mb-2">
   <span class="year-badge">
-           <i class="bi bi-calendar"></i> @contenido.Anio
+     <i class="bi bi-calendar"></i> @contenido.Anio
      </span>
    </div>
 
-           <h5 class="card-title fw-bold mb-2" style="line-height: 1.3;">
+  <h5 class="card-title fw-bold mb-2" style="line-height: 1.3;">
 @contenido.Titulo
     </h5>
        
-       <p class="text-muted small mb-2">
+     <p class="text-muted small mb-2">
    <i class="bi bi-person-fill text-info"></i> @contenido.Director
   </p>
 
          <p class="card-text small mb-3" style="line-height: 1.5; color: var(--text-muted);">
-           @contenido.Descripcion.Substring(0, Math.Min(100, contenido.Descripcion.Length))...
+        @contenido.Descripcion.Substring(0, Math.Min(100, contenido.Descripcion.Length))...
       </p>
         
      @if (contenido.Valoraciones.Any())
     {
     var promedio = contenido.Valoraciones.Average(v => v.Puntuacion);
-         <div class="d-flex align-items-center gap-2 mb-3">
+   <div class="d-flex align-items-center gap-2 mb-3">
        <span class="text-warning">
         @for (int i = 1; i <= 5; i++)
-          {
-            if (i <= promedio)
+    {
+         if (i <= promedio)
          {
       <i class="bi bi-star-fill"></i>
-            }
+      }
         else
-          {
+  {
             <i class="bi bi-star"></i>
          }
      }
-            </span>
-           <small class="text-muted">
+   </span>
+    <small class="text-muted">
     <strong>@promedio.ToString("F1")</strong>
-           (@contenido.Valoraciones.Count)
+     (@contenido.Valoraciones.Count)
     </small>
     </div>
       }
      </div>
-
- <div class="card-footer">
-            <a asp-controller="Contenidos" asp-action="Details" asp-route-id="@contenido.Id" 
-             class="btn btn-danger w-100">
-          <i class="bi bi-play-circle-fill"></i> Ver Detalles
-   </a>
-        </div>
-      </div>
+        </a>
         </div>
    }
     </div>

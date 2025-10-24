@@ -163,13 +163,14 @@
          </h5>
           </div>
            <div class="section-body">
-             <div class="row row-cols-1 row-cols-md-2 g-3">
+    <div class="row row-cols-1 row-cols-md-2 g-3">
         @foreach (var ca in Model.ContenidoActores.OrderByDescending(ca => ca.Contenido.Anio))
-      {
-             <div class="col">
-             <div class="card filmography-card">
+  {
+  <div class="col">
+             <a asp-controller="Contenidos" asp-action="Details" asp-route-id="@ca.ContenidoId" 
+      class="card filmography-card" style="text-decoration: none; color: inherit; display: block;">
             <!-- Póster de la película/serie -->
-            @if (!string.IsNullOrEmpty(ca.Contenido.Poster))
+      @if (!string.IsNullOrEmpty(ca.Contenido.Poster))
     {
                <img src="@ca.Contenido.Poster" 
    alt="Póster de @ca.Contenido.Titulo" 
@@ -182,57 +183,51 @@
          @if (ca.Contenido.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula)
           {
      <i class="bi bi-camera-reels-fill"></i>
-             }
-      else
+         }
+    else
            {
              <i class="bi bi-tv-fill"></i>
-          }
+  }
           </div>
     }
-               
+         
    <div class="card-header bg-transparent border-bottom border-info d-flex justify-content-between align-items-center">
-         <span>
+ <span>
         @if (ca.Contenido.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula)
-           {
+     {
        <i class="bi bi-camera-reels text-primary"></i>
        }
         else
          {
   <i class="bi bi-tv text-success"></i>
-                }
+       }
 @ca.Contenido.Tipo
-            </span>
-       <span class="badge bg-danger">@ca.Contenido.Anio</span>
-            </div>
-             <div class="card-body">
-            <h6 class="card-title fw-bold">@ca.Contenido.Titulo</h6>
+  </span>
+ <span class="badge bg-danger">@ca.Contenido.Anio</span>
+   </div>
+          <div class="card-body">
+    <h6 class="card-title fw-bold">@ca.Contenido.Titulo</h6>
      <p class="card-text mb-2">
          <small class="text-muted">
        <i class="bi bi-person"></i> <strong>Papel:</strong> @ca.Papel
-               @if (ca.EsProtagonista)
+      @if (ca.EsProtagonista)
       {
     <span class="badge bg-warning text-dark ms-2">
         <i class="bi bi-star-fill"></i> Protagonista
-          </span>
+       </span>
          }
       </small>
            </p>
-             <p class="card-text mb-0">
-               <small class="text-muted">
+    <p class="card-text mb-0">
+       <small class="text-muted">
   <i class="bi bi-tag"></i> @ca.Contenido.Genero.Nombre
   </small>
    </p>
-          </div>
-      <div class="card-footer bg-transparent border-top border-info">
-            <a asp-controller="Contenidos" asp-action="Details" asp-route-id="@ca.ContenidoId" 
-    class="btn btn-sm btn-danger w-100">
-  <i class="bi bi-play-circle-fill"></i> Ver Detalles
-              </a>
-           </div>
-        </div>
+ </div>
+ </a>
    </div>
    }
-       </div>
+    </div>
       </div>
             </div>
         }

@@ -353,44 +353,41 @@ class="poster-image-large"
           @foreach (var ca in Model.ContenidoActores.OrderByDescending(ca => ca.EsProtagonista))
            {
     <div class="col-md-6">
-          <div class="actor-item">
+  <a asp-controller="Actores" asp-action="Details" asp-route-id="@ca.ActorId" 
+    class="actor-item" style="text-decoration: none; color: inherit; display: block;">
    <div class="d-flex align-items-center">
     <div class="flex-shrink-0">
       @if (!string.IsNullOrEmpty(ca.Actor.Foto))
-          {
+    {
               <img src="@ca.Actor.Foto" 
-         alt="@ca.Actor.Nombre @ca.Actor.Apellidos" 
-   style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #17a2b8;"
-      onerror="this.onerror=null; this.src='/images/no-actor-photo.svg';" />
+         alt="Foto de actor" 
+   style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #17a2b8;" />
          }
-             else
+    else
  {
            <i class="bi bi-person-circle display-5 text-info"></i>
-             }
+  }
  </div>
-             <div class="flex-grow-1 ms-3">
-      <h6 class="mb-1 fw-bold">
-      <a asp-controller="Actores" asp-action="Details" asp-route-id="@ca.ActorId" 
-    class="text-decoration-none text-light">
+       <div class="flex-grow-1 ms-3">
+ <h6 class="mb-1 fw-bold">
       @ca.Actor.Nombre @ca.Actor.Apellidos
-     </a>
-            @if (ca.EsProtagonista)
-       {
+    @if (ca.EsProtagonista)
+  {
       <span class="badge bg-warning text-dark ms-2">
-        <i class="bi bi-star-fill"></i> Protagonista
-          </span>
+   <i class="bi bi-star-fill"></i> Protagonista
+ </span>
 }
       </h6>
-          <small class="text-muted">
+<small class="text-muted">
       <i class="bi bi-person"></i> @ca.Papel
     </small>
-    </div>
+  </div>
              </div>
-     </div>
+          </a>
       </div>
     }
   </div>
-       </div>
+</div>
      </div>
   }
 

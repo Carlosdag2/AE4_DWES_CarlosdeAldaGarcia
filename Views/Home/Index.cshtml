@@ -126,7 +126,8 @@
     @foreach (var item in Model)
     {
         <div class="col">
-            <div class="card content-card h-100 shadow-lg">
+            <a asp-controller="Contenidos" asp-action="Details" asp-route-id="@item.Id" 
+               class="card content-card h-100 shadow-lg" style="text-decoration: none; color: inherit; display: block;">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>
                         @if (item.Tipo == AE4_DWES_CarlosdeAldaGarcia.Models.TipoContenido.Pelicula)
@@ -176,13 +177,7 @@
                         </div>
                     }
                 </div>
-                <div class="card-footer">
-                    <a asp-controller="Contenidos" asp-action="Details" asp-route-id="@item.Id" 
-                       class="btn btn-danger w-100">
-                        <i class="bi bi-info-circle-fill"></i> Ver Detalles
-                    </a>
-                </div>
-            </div>
+            </a>
         </div>
     }
 </div>
@@ -193,45 +188,39 @@
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     <div class="col">
-        <div class="card feature-card shadow-lg h-100">
+        <a asp-controller="Contenidos" asp-action="Index" 
+       class="card feature-card shadow-lg h-100" style="text-decoration: none; color: inherit; display: block;">
             <div class="card-body">
-                <i class="bi bi-collection-play-fill feature-icon"></i>
-                <h5 class="card-title fw-bold mt-3 mb-3">Catálogo Completo</h5>
-                <p class="card-text text-muted mb-4">
-                    Explora toda nuestra biblioteca de películas y series. Filtra por género, año o busca tu favorita.
-                </p>
-                <a asp-controller="Contenidos" asp-action="Index" class="btn btn-outline-danger">
-                    <i class="bi bi-arrow-right-circle"></i> Ver Contenidos
-                </a>
-            </div>
-        </div>
+       <i class="bi bi-collection-play-fill feature-icon"></i>
+          <h5 class="card-title fw-bold mt-3 mb-3">Catálogo Completo</h5>
+      <p class="card-text text-muted mb-4">
+Explora toda nuestra biblioteca de películas y series. Filtra por género, año o busca tu favorita.
+   </p>
+         </div>
+      </a>
     </div>
     <div class="col">
-        <div class="card feature-card shadow-lg h-100">
-            <div class="card-body">
+        <a asp-controller="Actores" asp-action="Index" 
+ class="card feature-card shadow-lg h-100" style="text-decoration: none; color: inherit; display: block;">
+        <div class="card-body">
                 <i class="bi bi-people-fill feature-icon"></i>
-                <h5 class="card-title fw-bold mt-3 mb-3">Estrellas del Cine</h5>
-                <p class="card-text text-muted mb-4">
-                    Descubre a los mejores actores y actrices. Consulta su filmografía completa y biografía.
-                </p>
-                <a asp-controller="Actores" asp-action="Index" class="btn btn-outline-danger">
-                    <i class="bi bi-arrow-right-circle"></i> Ver Actores
-                </a>
-            </div>
-        </div>
+     <h5 class="card-title fw-bold mt-3 mb-3">Estrellas del Cine</h5>
+    <p class="card-text text-muted mb-4">
+          Descubre a los mejores actores y actrices. Consulta su filmografía completa y biografía.
+    </p>
+      </div>
+        </a>
     </div>
     <div class="col">
-        <div class="card feature-card shadow-lg h-100">
-            <div class="card-body">
-                <i class="bi bi-bar-chart-fill feature-icon"></i>
-                <h5 class="card-title fw-bold mt-3 mb-3">Analytics & Estadísticas</h5>
-                <p class="card-text text-muted mb-4">
-                    Consulta datos fascinantes sobre nuestra plataforma. Rankings, tendencias y mucho más.
-                </p>
-                <a asp-controller="Estadisticas" asp-action="Index" class="btn btn-outline-danger">
-                    <i class="bi bi-arrow-right-circle"></i> Ver Estadísticas
-                </a>
+        <a asp-controller="Estadisticas" asp-action="Index" 
+      class="card feature-card shadow-lg h-100" style="text-decoration: none; color: inherit; display: block;">
+       <div class="card-body">
+           <i class="bi bi-bar-chart-fill feature-icon"></i>
+    <h5 class="card-title fw-bold mt-3 mb-3">Analytics & Estadísticas</h5>
+    <p class="card-text text-muted mb-4">
+      Consulta datos fascinantes sobre nuestra plataforma. Rankings, tendencias y mucho más.
+   </p>
             </div>
-        </div>
+      </a>
     </div>
 </div>
