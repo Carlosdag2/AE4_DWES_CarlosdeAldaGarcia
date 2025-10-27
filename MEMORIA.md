@@ -1036,8 +1036,8 @@ Contiene la estructura común de todas las páginas:
 | Tecnología | Propósito |
 |------------|-----------|
 | **Razor Pages** | Motor de vistas |
-| **HTML5** | Estructura |
-| **CSS3** | Estilos y diseño |
+| **HTML** | Estructura |
+| **CSS** | Estilos y diseño |
 | **JavaScript** | Interactividad |
 
 ### Base de Datos
@@ -1051,10 +1051,8 @@ Contiene la estructura común de todas las páginas:
 
 | Herramienta | Propósito |
 |-------------|-----------|
-| **Visual Studio 2022** | IDE principal |
-| **Git** | Control de versiones |
+| **Visual Studio 2026** | IDE principal |
 | **GitHub** | Repositorio remoto |
-| **Postman** | Pruebas de API (opcional) |
 
 ---
 
