@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace AE4_DWES_CarlosdeAldaGarcia.Models
 {
     public class Valoracion
     {
+        [Key]
         public int Id { get; set; }
         public int ContenidoId { get; set; }
         public Contenido Contenido { get; set; } = null!;

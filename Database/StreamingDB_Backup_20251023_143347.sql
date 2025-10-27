@@ -1,10 +1,4 @@
-﻿-- =============================================
--- Script de Exportación - StreamingDB
--- Fecha de exportación: 2025-10-23 14:33:47
--- Generado automáticamente por StreamFlix
--- =============================================
-
--- Crear base de datos si no existe
+﻿-- Crear base de datos si no existe
 CREATE DATABASE IF NOT EXISTS StreamingDB;
 USE StreamingDB;
 
@@ -15,9 +9,8 @@ DROP TABLE IF EXISTS Contenidos;
 DROP TABLE IF EXISTS Actores;
 DROP TABLE IF EXISTS Generos;
 
--- =============================================
 -- Tabla: Generos
--- =============================================
+
 CREATE TABLE Generos (
     Id INT PRIMARY KEY AUTO_INCREMENT,
     Nombre VARCHAR(100) NOT NULL,
@@ -37,9 +30,7 @@ INSERT INTO Generos (Id, Nombre, Descripcion) VALUES
 (9, 'Animación', 'Contenido animado para todas las edades con historias creativas.'),
 (10, 'Documental', 'Contenido educativo e informativo sobre temas reales.');
 
--- =============================================
 -- Tabla: Actores
--- =============================================
 CREATE TABLE Actores (
     Id INT PRIMARY KEY AUTO_INCREMENT,
     Nombre VARCHAR(100) NOT NULL,
@@ -69,9 +60,7 @@ INSERT INTO Actores (Id, Nombre, Apellidos, FechaNacimiento, Nacionalidad, Biogr
 (15, 'Anne', 'Hathaway', '1982-11-12', 'Estadounidense', 'Actriz ganadora del Oscar por Los Miserables, también conocida por El Diablo Viste a la Moda.', 'https://upload.wikimedia.org/wikipedia/commons/0/03/Anne_Hathaway_at_The_Apprentice_in_NYC_03_%28cropped2%29.jpg'),
 (16, 'Mauro Ezequiel', 'Lombardo Quiroga', '1996-06-24', 'Argentina', 'Conocido artísticamente como Duki, es un rapero y trapero argentino. Surgió de las batallas de freestyle de El Quinto Escalón y se convirtió en uno de los artistas urbanos más importantes de Latinoamérica.', 'https://imagenes.elpais.com/resizer/v2/PUNXVKFLRNDMLNED23A4Q5ZWXM.jpg?auth=48b7d7a33597654e6294cc3e27fc76630ee8b3e82940d2e663a3b67dff261bc0&width=980&height=980&smart=true');
 
--- =============================================
 -- Tabla: Contenidos
--- =============================================
 CREATE TABLE Contenidos (
     Id INT PRIMARY KEY AUTO_INCREMENT,
     Titulo VARCHAR(200) NOT NULL,
@@ -116,9 +105,7 @@ INSERT INTO Contenidos (Id, Titulo, Descripcion, Anio, Duracion, Tipo, Director,
 (25, 'Pulp Fiction', 'Las vidas de dos sicarios, un boxeador, un gánster y su esposa se entrelazan en cuatro historias de violencia y redención.', 1994, 154, 'Pelicula', 'Quentin Tarantino', 'https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg', '1994-10-14', NULL, 6),
 (26, 'Rockstar Duki desde el fin del mundo', 'Documental que sigue la vida del artista argentino Duki en los meses previos a su histórico concierto en el estadio de Vélez. Un recorrido íntimo por su carrera, desde sus inicios en El Quinto Escalón hasta convertirse en uno de los referentes del trap latino.', 2025, 90, 'Pelicula', 'Tomas Segovia', 'https://es.web.img3.acsta.net/c_310_420/img/af/0d/af0d7fb87afb7c2de5995e6a9aa6c635.jpg', '2025-10-02', NULL, 10);
 
--- =============================================
 -- Tabla: ContenidoActores (Relación N:M)
--- =============================================
 CREATE TABLE ContenidoActores (
     ContenidoId INT NOT NULL,
     ActorId INT NOT NULL,
@@ -151,9 +138,7 @@ INSERT INTO ContenidoActores (ContenidoId, ActorId, Papel, EsProtagonista) VALUE
 (25, 10, 'Vincent Vega', TRUE),
 (26, 16, 'Protagonista / Artista', TRUE);
 
--- =============================================
 -- Tabla: Valoraciones
--- =============================================
 CREATE TABLE Valoraciones (
     Id INT PRIMARY KEY AUTO_INCREMENT,
     ContenidoId INT NOT NULL,
@@ -214,16 +199,3 @@ INSERT INTO Valoraciones (Id, ContenidoId, NombreUsuario, Puntuacion, Comentario
 (46, 26, 'ModoDiablo', 5, 'Increíble documental que muestra el lado humano de Duki. Muy emotivo ver su evolución desde El Quinto Escalón.', '2025-10-05 19:30:00'),
 (47, 26, 'TrapArgentino', 5, 'Un antes y después en los documentales musicales argentinos. Muestra el sacrificio detrás del éxito.', '2025-10-10 21:15:00'),
 (48, 26, 'FanDuki2024', 4, 'Me hizo llorar varias veces. Ver todo lo que pasó para llegar a Vélez es inspirador.', '2025-10-15 16:45:00');
-
--- =============================================
--- RESUMEN DE LA EXPORTACIÓN
--- =============================================
--- Géneros exportados: 10
--- Actores exportados: 16
--- Contenidos exportados: 26
--- Relaciones Contenido-Actor: 19
--- Valoraciones exportadas: 48
--- Total de registros: 119
--- =============================================
--- Script generado exitosamente
--- =============================================

@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace AE4_DWES_CarlosdeAldaGarcia.Models
 {
     public class Actor
     {
+        [Key]
         public int Id { get; set; }
         public string Nombre { get; set; } = string.Empty;
         public string Apellidos { get; set; } = string.Empty;

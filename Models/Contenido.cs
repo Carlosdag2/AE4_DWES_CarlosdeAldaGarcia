@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace AE4_DWES_CarlosdeAldaGarcia.Models
 {
     public enum TipoContenido
@@ -8,6 +10,7 @@ namespace AE4_DWES_CarlosdeAldaGarcia.Models
 
     public class Contenido
     {
+        [Key]
         public int Id { get; set; }
         public string Titulo { get; set; } = string.Empty;
         public string Descripcion { get; set; } = string.Empty;
